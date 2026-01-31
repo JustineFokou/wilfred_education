@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Niveau Secondaire - WilfriedÉducation</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 600: '#2563EB', 700: '#1D4ED8' },
+                        accent: { 500: '#F97316', 600: '#EA580C', 700: '#C2410C' }
+                    },
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif'],
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Poppins', sans-serif; }
+        .cycle-btn.active {
+            background: linear-gradient(to right, #F97316, #EA580C);
+            color: white;
+            box-shadow: 0 10px 15px -3px rgba(249, 115, 22, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="index.html" class="flex items-center space-x-2">
+                    <div class="bg-gradient-to-br from-primary-600 to-primary-800 p-2 rounded-xl">
+                        <i class="fas fa-graduation-cap text-xl text-white"></i>
+                    </div>
+                    <span class="text-xl font-bold font-poppins">
+                        <span class="text-primary-600">Wilfried</span><span class="text-accent-500">Éducation</span>
+                    </span>
+                </a>
+                <a href="index.html" class="text-gray-600 hover:text-primary-600">
+                    <i class="fas fa-arrow-left mr-2"></i>Retour
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="bg-gradient-to-br from-orange-500 via-orange-600 to-orange-700 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl mb-6 shadow-xl">
+                    <i class="fas fa-book text-4xl"></i>
+                </div>
+                <h1 class="text-4xl md:text-5xl font-bold mb-4 font-poppins">Niveau Secondaire</h1>
+                <p class="text-xl text-orange-100 max-w-2xl mx-auto">
+                    Préparez-vous pour le BEPC et le BAC avec nos cours complets de la 6ème à la Terminale
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tabs & Content -->
+    <section class="py-16 -mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Tabs -->
+            <div class="flex justify-center space-x-4 mb-12">
+                <button onclick="showCycle('college')" id="btn-college" class="cycle-btn active px-8 py-3 bg-white rounded-xl shadow-md font-semibold transition-all duration-300 hover:shadow-lg">
+                    <i class="fas fa-graduation-cap mr-2"></i>Collège (6ème - 3ème)
+                </button>
+                <button onclick="showCycle('lycee')" id="btn-lycee" class="cycle-btn px-8 py-3 bg-white rounded-xl shadow-md font-semibold transition-all duration-300 hover:shadow-lg">
+                    <i class="fas fa-school mr-2"></i>Lycée (2nde - Tle)
+                </button>
+            </div>
+            
+            <!-- Collège -->
+            <div id="cycle-college" class="cycle-content">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 font-poppins">
+                        Classes du <span class="text-accent-600">Collège</span>
+                    </h2>
+                    <p class="text-gray-600 mt-2">De la 6ème à la 3ème - Préparation au BEPC</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent hover:border-orange-500">
+                        <div class="bg-gradient-to-br from-orange-500 to-orange-600 w-14 h-14 rounded-xl flex items-center justify-center shadow-lg mb-4">
+                            <i class="fas fa-book-open text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2 font-poppins">6ème</h3>
+                        <p class="text-gray-600 mb-4">Première année du collège</p>
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-100 text-sm text-gray-500">
+                            <span><i class="fas fa-video text-orange-500 mr-1"></i>72 cours</span>
+                            <span><i class="fas fa-file-alt text-accent-500 mr-1"></i>45 épreuves</span>
+                        </div>
+                        <button class="w-full mt-4 px-4 py-2 bg-accent-600 hover:bg-accent-700 text-white rounded-lg font-semibold transition-colors">
+                            Accéder
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent hover:border-orange-500">
+                        <div class="bg-gradient-to-br from-orange-500 to-orange-600 w-14 h-14 rounded-xl flex items-center justify-center shadow-lg mb-4">
+                            <i class="fas fa-book-open text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2 font-poppins">5ème</h3>
+                        <p class="text-gray-600 mb-4">Deuxième année du collège</p>
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-100 text-sm text-gray-500">
+                            <span><i class="fas fa-video text-orange-500 mr-1"></i>78 cours</span>
+                            <span><i class="fas fa-file-alt text-accent-500 mr-1"></i>48 épreuves</span>
+                        </div>
+                        <button class="w-full mt-4 px-4 py-2 bg-accent-600 hover:bg-accent-700 text-white rounded-lg font-semibold transition-colors">
+                            Accéder
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent hover:border-orange-500">
+                        <div class="bg-gradient-to-br from-orange-500 to-orange-600 w-14 h-14 rounded-xl flex items-center justify-center shadow-lg mb-4">
+                            <i class="fas fa-book-open text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2 font-poppins">4ème</h3>
+                        <p class="text-gray-600 mb-4">Troisième année du collège</p>
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-100 text-sm text-gray-500">
+                            <span><i class="fas fa-video text-orange-500 mr-1"></i>82 cours</span>
+                            <span><i class="fas fa-file-alt text-accent-500 mr-1"></i>52 épreuves</span>
+                        </div>
+                        <button class="w-full mt-4 px-4 py-2 bg-accent-600 hover:bg-accent-700 text-white rounded-lg font-semibold transition-colors">
+                            Accéder
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent hover:border-orange-500 relative">
+                        <span class="absolute top-4 right-4 bg-accent-500 text-white px-3 py-1 rounded-full text-xs font-bold">Important</span>
+                        <div class="bg-gradient-to-br from-orange-500 to-orange-600 w-14 h-14 rounded-xl flex items-center justify-center shadow-lg mb-4">
+                            <i class="fas fa-book-open text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2 font-poppins">3ème</h3>
+                        <p class="text-gray-600 mb-4">Préparation au BEPC</p>
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-100 text-sm text-gray-500">
+                            <span><i class="fas fa-video text-orange-500 mr-1"></i>95 cours</span>
+                            <span><i class="fas fa-file-alt text-accent-500 mr-1"></i>68 épreuves</span>
+                        </div>
+                        <button class="w-full mt-4 px-4 py-2 bg-accent-600 hover:bg-accent-700 text-white rounded-lg font-semibold transition-colors">
+                            Accéder
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Lycée -->
+            <div id="cycle-lycee" class="cycle-content hidden">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 font-poppins">
+                        Classes du <span class="text-accent-600">Lycée</span>
+                    </h2>
+                    <p class="text-gray-600 mt-2">De la 2nde à la Terminale - Préparation au BAC</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                    <div class="bg-white rounded-2xl p-8 shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent hover:border-orange-500">
+                        <div class="bg-gradient-to-br from-orange-500 to-orange-600 w-16 h-16 rounded-xl flex items-center justify-center shadow-lg mb-6">
+                            <i class="fas fa-book-open text-3xl text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3 font-poppins">Seconde</h3>
+                        <p class="text-gray-600 mb-4">Première année du lycée</p>
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-100 text-sm text-gray-500">
+                            <span><i class="fas fa-video text-orange-500 mr-1"></i>88 cours</span>
+                            <span><i class="fas fa-file-alt text-accent-500 mr-1"></i>55 épreuves</span>
+                        </div>
+                        <button class="w-full mt-6 px-4 py-3 bg-accent-600 hover:bg-accent-700 text-white rounded-lg font-semibold transition-colors">
+                            Accéder
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-8 shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent hover:border-orange-500">
+                        <div class="bg-gradient-to-br from-orange-500 to-orange-600 w-16 h-16 rounded-xl flex items-center justify-center shadow-lg mb-6">
+                            <i class="fas fa-book-open text-3xl text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3 font-poppins">Première</h3>
+                        <p class="text-gray-600 mb-4">Deuxième année du lycée</p>
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-100 text-sm text-gray-500">
+                            <span><i class="fas fa-video text-orange-500 mr-1"></i>102 cours</span>
+                            <span><i class="fas fa-file-alt text-accent-500 mr-1"></i>65 épreuves</span>
+                        </div>
+                        <button class="w-full mt-6 px-4 py-3 bg-accent-600 hover:bg-accent-700 text-white rounded-lg font-semibold transition-colors">
+                            Accéder
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-8 shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent hover:border-orange-500 relative">
+                        <span class="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold">BAC</span>
+                        <div class="bg-gradient-to-br from-orange-500 to-orange-600 w-16 h-16 rounded-xl flex items-center justify-center shadow-lg mb-6">
+                            <i class="fas fa-book-open text-3xl text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3 font-poppins">Terminale</h3>
+                        <p class="text-gray-600 mb-4">Préparation au Baccalauréat</p>
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-100 text-sm text-gray-500">
+                            <span><i class="fas fa-video text-orange-500 mr-1"></i>125 cours</span>
+                            <span><i class="fas fa-file-alt text-accent-500 mr-1"></i>85 épreuves</span>
+                        </div>
+                        <button class="w-full mt-6 px-4 py-3 bg-accent-600 hover:bg-accent-700 text-white rounded-lg font-semibold transition-colors">
+                            Accéder
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-gray-400">&copy; 2026 WilfriedÉducation. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script>
+        function showCycle(cycle) {
+            document.querySelectorAll('.cycle-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            document.querySelectorAll('.cycle-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(`cycle-${cycle}`).classList.remove('hidden');
+            document.getElementById(`btn-${cycle}`).classList.add('active');
+        }
+    </script>
+</body>
+</html>

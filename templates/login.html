@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - WilfriedÉducation</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 600: '#2563EB', 700: '#1D4ED8' },
+                        accent: { 500: '#F97316', 600: '#EA580C' }
+                    },
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif'],
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Poppins', sans-serif; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-primary-50 via-white to-accent-50 min-h-screen flex items-center justify-center py-12 px-4">
+    
+    <div class="max-w-md w-full">
+        <!-- Logo & Title -->
+        <div class="text-center mb-8">
+            <a href="index.html" class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-primary-600 to-primary-800 rounded-2xl shadow-xl mb-4">
+                <i class="fas fa-graduation-cap text-3xl text-white"></i>
+            </a>
+            <h2 class="text-3xl font-bold text-gray-900 font-poppins">Bienvenue !</h2>
+            <p class="text-gray-600 mt-2">Connectez-vous pour accéder à vos cours</p>
+        </div>
+        
+        <!-- Login Form -->
+        <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+            <form class="space-y-6" onsubmit="handleLogin(event)">
+                
+                <!-- Email Field -->
+                <div>
+                    <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-envelope text-primary-600 mr-2"></i>Adresse Email
+                    </label>
+                    <input 
+                        type="email" 
+                        name="email" 
+                        id="email" 
+                        required 
+                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 outline-none"
+                        placeholder="votre@email.com"
+                    >
+                </div>
+                
+                <!-- Password Field -->
+                <div>
+                    <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-lock text-primary-600 mr-2"></i>Mot de passe
+                    </label>
+                    <div class="relative">
+                        <input 
+                            type="password" 
+                            name="password" 
+                            id="password" 
+                            required 
+                            class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 outline-none pr-12"
+                            placeholder="••••••••"
+                        >
+                        <button type="button" onclick="togglePassword()" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-primary-600">
+                            <i class="fas fa-eye" id="toggleIcon"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Remember & Forgot -->
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center">
+                        <input type="checkbox" name="remember" class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                        <span class="ml-2 text-sm text-gray-700">Se souvenir de moi</span>
+                    </label>
+                    <a href="#" class="text-sm text-primary-600 hover:text-primary-700 font-semibold">
+                        Mot de passe oublié ?
+                    </a>
+                </div>
+                
+                <!-- Submit Button -->
+                <button 
+                    type="submit" 
+                    class="w-full bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
+                >
+                    <i class="fas fa-sign-in-alt mr-2"></i>Se Connecter
+                </button>
+            </form>
+            
+            <!-- Divider -->
+            <div class="relative my-6">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-200"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-4 bg-white text-gray-500">Ou continuer avec</span>
+                </div>
+            </div>
+            
+            <!-- Social Login -->
+            <div class="grid grid-cols-2 gap-4">
+                <button class="flex items-center justify-center px-4 py-3 border-2 border-gray-200 rounded-xl hover:border-primary-500 hover:bg-primary-50 transition-all duration-200">
+                    <i class="fab fa-google text-xl text-red-500 mr-2"></i>
+                    <span class="font-semibold text-gray-700">Google</span>
+                </button>
+                <button class="flex items-center justify-center px-4 py-3 border-2 border-gray-200 rounded-xl hover:border-primary-500 hover:bg-primary-50 transition-all duration-200">
+                    <i class="fab fa-facebook text-xl text-blue-600 mr-2"></i>
+                    <span class="font-semibold text-gray-700">Facebook</span>
+                </button>
+            </div>
+            
+            <!-- Register Link -->
+            <p class="mt-6 text-center text-gray-600">
+                Pas encore de compte ? 
+                <a href="register.html" class="text-primary-600 hover:text-primary-700 font-bold">
+                    Inscrivez-vous
+                </a>
+            </p>
+            
+            <!-- Back to Home -->
+            <div class="mt-4 text-center">
+                <a href="index.html" class="text-sm text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-arrow-left mr-2"></i>Retour à l'accueil
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('toggleIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+        
+        function handleLogin(event) {
+            event.preventDefault();
+            alert('Fonctionnalité de connexion à implémenter avec votre backend !');
+            // Ici vous ajouterez votre logique de connexion
+        }
+    </script>
+</body>
+</html>

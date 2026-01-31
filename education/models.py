@@ -166,56 +166,56 @@ class Comment(BaseModel):
 
     def __str__(self):
         return f"Commentaire de {self.author_name}"
+    
 
 class Video(BaseModel):
     """
-    Modèle pour les vidéos pédagogiques
+    Model for educational videos
     """
 
-    titre = models.CharField(
+    title = models.CharField(
         max_length=200,
-        verbose_name="Titre",
-        help_text="Titre de la vidéo pédagogique"
+        verbose_name="Title",
+        help_text="Educational video title"
     )
 
     description = models.TextField(
         blank=True,
         verbose_name="Description",
-        help_text="Description de la vidéo"
+        help_text="Video description"
     )
 
-    lien_youtube = models.URLField(
-        verbose_name="Lien YouTube",
-        help_text="Lien vers la vidéo YouTube"
+    youtube_link = models.URLField(
+        verbose_name="YouTube link",
+        help_text="Link to the YouTube video"
     )
 
-    matiere = models.ForeignKey(
-        Matiere,
+    subject = models.ForeignKey(
+        "education.Subject",  # recommended string reference
         on_delete=models.CASCADE,
         related_name="videos",
-        verbose_name="Matière",
-        help_text="Matière associée à la vidéo"
+        verbose_name="Subject",
+        help_text="Subject related to the video"
     )
 
-    type_contenu = models.ForeignKey(
-        TypeContenu,
+    content_type = models.ForeignKey(
+        "education.ContentType",  # recommended string reference
         on_delete=models.CASCADE,
         related_name="videos",
-        verbose_name="Type de contenu",
-        help_text="Type de contenu : cours, épreuve ou correction"
+        verbose_name="Content type",
+        help_text="Content type: course, exam or correction"
     )
 
     is_published = models.BooleanField(
         default=True,
-        verbose_name="Publié",
-        help_text="Indique si la vidéo est visible par les internautes"
+        verbose_name="Published",
+        help_text="Indicates whether the video is visible to users"
     )
 
     class Meta:
-        verbose_name = "Vidéo"
-        verbose_name_plural = "Vidéos"
-        ordering = ['-created_at']
+        verbose_name = "Video"
+        verbose_name_plural = "Videos"
+        ordering = ["-created_at"]
 
     def __str__(self):
-        return self.titre
-
+        return self.title

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Niveau Supérieur - WilfriedÉducation</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 600: '#2563EB' },
+                        accent: { 500: '#F97316' }
+                    },
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif'],
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Poppins', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="index.html" class="flex items-center space-x-2">
+                    <div class="bg-gradient-to-br from-primary-600 to-primary-800 p-2 rounded-xl">
+                        <i class="fas fa-graduation-cap text-xl text-white"></i>
+                    </div>
+                    <span class="text-xl font-bold font-poppins">
+                        <span class="text-primary-600">Wilfried</span><span class="text-accent-500">Éducation</span>
+                    </span>
+                </a>
+                <a href="index.html" class="text-gray-600 hover:text-primary-600">
+                    <i class="fas fa-arrow-left mr-2"></i>Retour
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="bg-gradient-to-br from-purple-600 via-purple-700 to-purple-900 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl mb-6 shadow-xl">
+                    <i class="fas fa-university text-4xl"></i>
+                </div>
+                <h1 class="text-4xl md:text-5xl font-bold mb-4 font-poppins">Niveau Supérieur</h1>
+                <p class="text-xl text-purple-100 max-w-2xl mx-auto">
+                    Cours universitaires de Licence et Master pour votre réussite académique
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filières -->
+    <section class="py-16 -mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Sciences & Technologies -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-purple-500 group">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="bg-gradient-to-br from-blue-500 to-blue-600 w-16 h-16 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-flask text-3xl text-white"></i>
+                        </div>
+                        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-bold">12 Cours</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3 font-poppins">Sciences & Technologies</h3>
+                    <p class="text-gray-600 mb-6">Mathématiques, Physique, Chimie, Informatique, Biologie</p>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center text-sm text-gray-700">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>Licence & Master disponibles</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-700">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>Projets pratiques inclus</span>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full py-3 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-xl font-semibold transition-all">
+                        <i class="fas fa-arrow-right mr-2"></i>Explorer
+                    </button>
+                </div>
+
+                <!-- Sciences Économiques -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-purple-500 group">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="bg-gradient-to-br from-green-500 to-green-600 w-16 h-16 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-chart-line text-3xl text-white"></i>
+                        </div>
+                        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-bold">8 Cours</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3 font-poppins">Sciences Économiques</h3>
+                    <p class="text-gray-600 mb-6">Économie, Gestion, Finance, Comptabilité, Marketing</p>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center text-sm text-gray-700">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>Études de cas réelles</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-700">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>Outils professionnels</span>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full py-3 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-xl font-semibold transition-all">
+                        <i class="fas fa-arrow-right mr-2"></i>Explorer
+                    </button>
+                </div>
+
+                <!-- Droit -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-purple-500 group">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="bg-gradient-to-br from-red-500 to-red-600 w-16 h-16 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-gavel text-3xl text-white"></i>
+                        </div>
+                        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-bold">6 Cours</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3 font-poppins">Droit</h3>
+                    <p class="text-gray-600 mb-6">Droit privé, Droit public, Droit des affaires, Procédure</p>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center text-sm text-gray-700">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>Jurisprudence à jour</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-700">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>Cas pratiques</span>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full py-3 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-xl font-semibold transition-all">
+                        <i class="fas fa-arrow-right mr-2"></i>Explorer
+                    </button>
+                </div>
+
+                <!-- Lettres -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-purple-500 group">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="bg-gradient-to-br from-pink-500 to-pink-600 w-16 h-16 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-book-open text-3xl text-white"></i>
+                        </div>
+                        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-bold">7 Cours</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3 font-poppins">Lettres & Sciences Humaines</h3>
+                    <p class="text-gray-600 mb-6">Littérature, Histoire, Philosophie, Sociologie</p>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center text-sm text-gray-700">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>Analyse de textes</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-700">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>Méthodologie recherche</span>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full py-3 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-xl font-semibold transition-all">
+                        <i class="fas fa-arrow-right mr-2"></i>Explorer
+                    </button>
+                </div>
+
+                <!-- Médecine -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-purple-500 group relative">
+                    <span class="absolute top-4 right-4 bg-accent-500 text-white px-3 py-1 rounded-full text-xs font-bold">Nouveau</span>
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="bg-gradient-to-br from-cyan-500 to-cyan-600 w-16 h-16 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-heartbeat text-3xl text-white"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3 font-poppins">Médecine & Santé</h3>
+                    <p class="text-gray-600 mb-6">Médecine, Pharmacie, Soins infirmiers, Nutrition</p>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center text-sm text-gray-700">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>Cas cliniques</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-700">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>Protocoles médicaux</span>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full py-3 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-xl font-semibold transition-all">
+                        <i class="fas fa-arrow-right mr-2"></i>Explorer
+                    </button>
+                </div>
+
+                <!-- Ingénierie -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-purple-500 group">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 w-16 h-16 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-cogs text-3xl text-white"></i>
+                        </div>
+                        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-bold">9 Cours</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3 font-poppins">Ingénierie</h3>
+                    <p class="text-gray-600 mb-6">Génie civil, Électrique, Mécanique, Informatique</p>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center text-sm text-gray-700">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>Projets d'ingénierie</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-700">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>Logiciels pros</span>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full py-3 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-xl font-semibold transition-all">
+                        <i class="fas fa-arrow-right mr-2"></i>Explorer
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-gray-400">&copy; 2026 WilfriedÉducation. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

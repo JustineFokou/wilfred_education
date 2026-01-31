@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'core',
     'education',
     'linguistique',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -54,6 +55,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "config.urls"
+AUTH_USER_MODEL = "accounts.User"
 
 TEMPLATES = [
     {
