@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WilfriedÉducation — Admin Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+/* ============ RESET & ROOT ============ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-base: #0f1117;
+  --bg-card: #161921;
+  --bg-card-hover: #1e2230;
+  --bg-input: #1a1f2e;
+  --border: #2a3045;
+  --border-focus: #3b82f6;
+  --text-primary: #f0f2f7;
+  --text-secondary: #8892a8;
+  --text-muted: #545d73;
+  --blue: #3b82f6;
+  --blue-dim: rgba(59,130,246,0.12);
+  --green: #22c55e;
+  --green-dim: rgba(34,197,94,0.12);
+  --amber: #f59e0b;
+  --amber-dim: rgba(245,158,11,0.12);
+  --red: #ef4444;
+  --red-dim: rgba(239,68,68,0.12);
+  --purple: #a855f7;
+  --purple-dim: rgba(168,85,247,0.12);
+  --orange: #f97316;
+  --orange-dim: rgba(249,115,22,0.12);
+  --gold: #fbbf24;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --sidebar-w: 240px;
+  --font-display: 'Playfair Display', serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+html { font-size: 15px; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  overflow: hidden;
+}
+
+/* ============ SIDEBAR ============ */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--bg-card);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+}
+.sidebar-logo {
+  padding: 22px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sidebar-logo .icon-wrap {
+  width: 38px; height: 38px;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: #fff;
+}
+.sidebar-logo .brand { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; }
+.sidebar-logo .brand span { color: var(--gold); }
+
+.nav-section-label {
+  font-size: 0.67rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  padding: 18px 20px 6px;
+  font-weight: 600;
+}
+.nav-links { flex: 1; overflow-y: auto; padding-bottom: 12px; }
+.nav-item {
+  display: flex; align-items: center; gap: 11px;
+  padding: 10px 20px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  position: relative;
+  border-radius: 0;
+  margin: 1px 10px;
+  border-radius: var(--radius);
+}
+.nav-item:hover { background: var(--bg-card-hover); color: var(--text-primary); }
+.nav-item.active {
+  background: var(--blue-dim);
+  color: var(--blue);
+}
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 20%; bottom: 20%;
+  width: 3px;
+  background: var(--blue);
+  border-radius: 0 3px 3px 0;
+  left: -10px;
+}
+.nav-item i { width: 18px; text-align: center; font-size: 0.85rem; }
+.nav-item .badge {
+  margin-left: auto;
+  background: var(--red);
+  color: #fff;
+  font-size: 0.6rem;
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+.sidebar-bottom {
+  border-top: 1px solid var(--border);
+  padding: 14px 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.sidebar-bottom .avatar {
+  width: 34px; height: 34px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.78rem; color: #fff;
+}
+.sidebar-bottom .info { flex: 1; min-width: 0; }
+.sidebar-bottom .info .name { font-size: 0.82rem; font-weight: 600; }
+.sidebar-bottom .info .role { font-size: 0.68rem; color: var(--text-muted); }
+
+/* ============ MAIN AREA ============ */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* --- Top Bar --- */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 28px;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  gap: 16px;
+}
+.topbar-left { display: flex; align-items: center; gap: 16px; flex: 1; }
+.topbar-left h2 { font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; }
+.topbar-left .sub { font-size: 0.75rem; color: var(--text-muted); }
+
+.search-wrap {
+  position: relative;
+  width: 280px;
+}
+.search-wrap i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.82rem; }
+.search-wrap input {
+  width: 100%; padding: 8px 12px 8px 36px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  font-family: var(--font-body);
+  outline: none; transition: border-color 0.2s;
+}
+.search-wrap input:focus { border-color: var(--border-focus); }
+.search-wrap input::placeholder { color: var(--text-muted); }
+
+.topbar-actions { display: flex; align-items: center; gap: 10px; }
+.icon-btn {
+  width: 36px; height: 36px;
+  border-radius: var(--radius);
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 0.82rem;
+  transition: all 0.2s; position: relative;
+}
+.icon-btn:hover { background: var(--bg-card-hover); color: var(--text-primary); }
+.icon-btn .dot {
+  position: absolute; top: 6px; right: 6px;
+  width: 7px; height: 7px;
+  background: var(--red); border-radius: 50%;
+  border: 2px solid var(--bg-input);
+}
+
+/* ============ CONTENT AREA ============ */
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 28px;
+  background: var(--bg-base);
+}
+.content::-webkit-scrollbar { width: 6px; }
+.content::-webkit-scrollbar-track { background: transparent; }
+.content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* --- Page sections (tabs) --- */
+.page { display: none; animation: fadeIn 0.35s ease; }
+.page.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ============ DASHBOARD HOME ============ */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.stat-card:hover { border-color: var(--border-focus); transform: translateY(-2px); }
+.stat-card .top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
+.stat-card .icon-circle {
+  width: 42px; height: 42px; border-radius: 11px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+}
+.stat-card .trend { font-size: 0.72rem; font-weight: 600; display: flex; align-items: center; gap: 3px; }
+.stat-card .trend.up { color: var(--green); }
+.stat-card .trend.down { color: var(--red); }
+.stat-card .value { font-family: var(--font-display); font-size: 1.7rem; font-weight: 800; }
+.stat-card .label { font-size: 0.75rem; color: var(--text-muted); margin-top: 3px; }
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.7fr 1fr;
+  gap: 18px;
+}
+
+/* ============ CARDS ============ */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.card-header {
+  padding: 16px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+.card-header h3 { font-size: 0.9rem; font-weight: 600; }
+.card-header .action-link { font-size: 0.75rem; color: var(--blue); cursor: pointer; font-weight: 500; }
+.card-header .action-link:hover { text-decoration: underline; }
+.card-body { padding: 16px 20px; }
+
+/* ============ TABLE ============ */
+.table-wrap { overflow-x: auto; }
+table {
+  width: 100%; border-collapse: collapse;
+  font-size: 0.82rem;
+}
+thead th {
+  text-align: left; padding: 10px 12px;
+  color: var(--text-muted);
+  font-weight: 600; font-size: 0.7rem;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+tbody td {
+  padding: 11px 12px;
+  border-bottom: 1px solid rgba(42,48,69,0.5);
+  color: var(--text-secondary);
+  vertical-align: middle;
+}
+tbody tr:last-child td { border-bottom: none; }
+tbody tr { transition: background 0.15s; }
+tbody tr:hover { background: var(--bg-card-hover); }
+
+/* ============ BADGES / TAGS ============ */
+.badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px; border-radius: 20px;
+  font-size: 0.7rem; font-weight: 600;
+}
+.badge-blue { background: var(--blue-dim); color: var(--blue); }
+.badge-green { background: var(--green-dim); color: var(--green); }
+.badge-amber { background: var(--amber-dim); color: var(--amber); }
+.badge-red { background: var(--red-dim); color: var(--red); }
+.badge-purple { background: var(--purple-dim); color: var(--purple); }
+.badge-orange { background: var(--orange-dim); color: var(--orange); }
+
+/* ============ BUTTONS ============ */
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 7px 14px; border-radius: var(--radius);
+  font-size: 0.78rem; font-weight: 600;
+  font-family: var(--font-body);
+  cursor: pointer; border: none;
+  transition: all 0.2s;
+}
+.btn-primary { background: var(--blue); color: #fff; }
+.btn-primary:hover { background: #2563eb; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(59,130,246,0.35); }
+.btn-ghost { background: var(--bg-input); color: var(--text-secondary); border: 1px solid var(--border); }
+.btn-ghost:hover { background: var(--bg-card-hover); color: var(--text-primary); }
+.btn-danger { background: var(--red-dim); color: var(--red); }
+.btn-danger:hover { background: var(--red); color: #fff; }
+.btn-sm { padding: 4px 10px; font-size: 0.72rem; }
+
+/* ============ TOGGLE SWITCH ============ */
+.toggle {
+  position: relative; width: 38px; height: 21px;
+  cursor: pointer;
+}
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle .slider {
+  position: absolute; inset: 0;
+  background: var(--border);
+  border-radius: 21px;
+  transition: 0.25s;
+}
+.toggle .slider::before {
+  content: '';
+  position: absolute;
+  height: 15px; width: 15px;
+  left: 3px; bottom: 3px;
+  background: #fff; border-radius: 50%;
+  transition: 0.25s;
+}
+.toggle input:checked + .slider { background: var(--green); }
+.toggle input:checked + .slider::before { transform: translateX(17px); }
+
+/* ============ FORM ELEMENTS ============ */
+.form-row { display: flex; gap: 12px; margin-bottom: 12px; }
+.form-group { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+.form-group label { font-size: 0.72rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.form-group input, .form-group select {
+  padding: 8px 12px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  font-family: var(--font-body);
+  outline: none; transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+.form-group input:focus, .form-group select:focus { border-color: var(--border-focus); }
+.form-group select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23545d73'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; color: var(--text-primary); }
+.form-group select option { background: var(--bg-card); color: var(--text-primary); }
+
+/* ============ MODAL ============ */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: none; align-items: center; justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  width: 520px; max-width: 92vw;
+  max-height: 85vh; overflow-y: auto;
+  animation: modalIn 0.25s ease;
+}
+@keyframes modalIn { from { transform: scale(0.92) translateY(12px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+.modal-head {
+  padding: 20px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+.modal-head h3 { font-size: 1rem; font-weight: 700; }
+.modal-head .close-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.1rem; transition: color 0.2s; }
+.modal-head .close-btn:hover { color: var(--red); }
+.modal-body { padding: 22px 24px; }
+.modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; }
+
+/* ============ ACTIVITY LIST ============ */
+.activity-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(42,48,69,0.4);
+}
+.activity-item:last-child { border-bottom: none; }
+.activity-item .a-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; flex-shrink: 0;
+}
+.activity-item .a-text { font-size: 0.78rem; color: var(--text-secondary); line-height: 1.45; }
+.activity-item .a-text strong { color: var(--text-primary); }
+.activity-item .a-time { font-size: 0.67rem; color: var(--text-muted); margin-top: 2px; }
+
+/* ============ FILTER BAR ============ */
+.filter-bar {
+  display: flex; align-items: center; gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.filter-bar .search-wrap { width: 220px; }
+.filter-chip {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--bg-input);
+  color: var(--text-secondary);
+  font-size: 0.74rem; font-weight: 500;
+  cursor: pointer; transition: all 0.2s;
+  font-family: var(--font-body);
+}
+.filter-chip:hover, .filter-chip.active { border-color: var(--blue); color: var(--blue); background: var(--blue-dim); }
+
+/* ============ MINI CHART BARS ============ */
+.mini-bar-wrap { display: flex; align-items: flex-end; gap: 3px; height: 36px; }
+.mini-bar { width: 5px; border-radius: 3px; background: var(--border); transition: background 0.2s; }
+.mini-bar.fill { background: var(--blue); }
+.mini-bar.fill-green { background: var(--green); }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 900px) {
+  .stats-grid { grid-template-columns: repeat(2,1fr); }
+  .dashboard-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  :root { --sidebar-w: 68px; }
+  .sidebar-logo .brand, .nav-item span, .nav-section-label, .sidebar-bottom .info { display: none; }
+  .nav-item { justify-content: center; padding: 10px; margin: 1px 6px; }
+  .nav-item.active::before { display: none; }
+  .content { padding: 18px 14px; }
+  .topbar { padding: 12px 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ SIDEBAR ============ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="icon-wrap"><i class="fas fa-graduation-cap"></i></div>
+    <div class="brand">Wilfried<span>Éd.</span></div>
+  </div>
+
+  <div class="nav-links">
+    <div class="nav-section-label">Principal</div>
+    <div class="nav-item active" onclick="navigate('dashboard')">
+      <i class="fas fa-grid-view"></i><span>Tableau de bord</span>
+    </div>
+
+    <div class="nav-section-label">Gestion</div>
+    <div class="nav-item" onclick="navigate('users')">
+      <i class="fas fa-users"></i><span>Utilisateurs</span><span class="badge">3</span>
+    </div>
+    <div class="nav-item" onclick="navigate('content')">
+      <i class="fas fa-photo-film"></i><span>Contenu</span>
+    </div>
+    <div class="nav-item" onclick="navigate('subjects')">
+      <i class="fas fa-book-open"></i><span>Matières</span>
+    </div>
+    <div class="nav-item" onclick="navigate('categories')">
+      <i class="fas fa-layer-group"></i><span>Catégories</span>
+    </div>
+
+    <div class="nav-section-label">Contrôle</div>
+    <div class="nav-item" onclick="navigate('errors')">
+      <i class="fas fa-triangle-exclamation"></i><span>Erreurs</span><span class="badge">2</span>
+    </div>
+    <div class="nav-item" onclick="navigate('settings')">
+      <i class="fas fa-gear"></i><span>Paramètres</span>
+    </div>
+  </div>
+
+  <div class="sidebar-bottom">
+    <div class="avatar">WA</div>
+    <div class="info">
+      <div class="name">Wilfried A.</div>
+      <div class="role">Super Admin</div>
+    </div>
+  </div>
+</aside>
+
+<!-- ============ MAIN ============ -->
+<div class="main">
+
+  <!-- Top Bar -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div>
+        <h2 id="page-title">Tableau de bord</h2>
+        <div class="sub" id="page-sub">Bienvenue, voici un aperçu de votre plateforme</div>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <div class="search-wrap">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Rechercher..." id="global-search" oninput="globalSearch(this.value)">
+      </div>
+      <div class="icon-btn" title="Notifications"><i class="fas fa-bell"></i><span class="dot"></span></div>
+      <div class="icon-btn" title="Messages"><i class="fas fa-envelope"></i><span class="dot"></span></div>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <div class="content">
+
+    <!-- ========== PAGE: DASHBOARD ========== -->
+    <div class="page active" id="page-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="top">
+            <div class="icon-circle" style="background:var(--blue-dim);color:var(--blue)"><i class="fas fa-users"></i></div>
+            <div class="trend up"><i class="fas fa-trend-up"></i> +12%</div>
+          </div>
+          <div class="value">5,248</div>
+          <div class="label">Utilisateurs actifs</div>
+        </div>
+        <div class="stat-card">
+          <div class="top">
+            <div class="icon-circle" style="background:var(--green-dim);color:var(--green)"><i class="fas fa-play-circle"></i></div>
+            <div class="trend up"><i class="fas fa-trend-up"></i> +8%</div>
+          </div>
+          <div class="value">347</div>
+          <div class="label">Vidéos publiées</div>
+        </div>
+        <div class="stat-card">
+          <div class="top">
+            <div class="icon-circle" style="background:var(--amber-dim);color:var(--amber)"><i class="fas fa-book-open"></i></div>
+            <div class="trend up"><i class="fas fa-trend-up"></i> +3</div>
+          </div>
+          <div class="value">28</div>
+          <div class="label">Matières actives</div>
+        </div>
+        <div class="stat-card">
+          <div class="top">
+            <div class="icon-circle" style="background:var(--purple-dim);color:var(--purple)"><i class="fas fa-eye"></i></div>
+            <div class="trend down"><i class="fas fa-trend-down"></i> -2%</div>
+          </div>
+          <div class="value">12.4k</div>
+          <div class="label">Vues cette semaine</div>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <!-- Recent Activity -->
+        <div class="card">
+          <div class="card-header">
+            <h3><i class="fas fa-clock" style="color:var(--blue);margin-right:8px"></i>Activité récente</h3>
+            <span class="action-link">Voir tout</span>
+          </div>
+          <div class="card-body">
+            <div class="activity-item">
+              <div class="a-icon" style="background:var(--green-dim);color:var(--green)"><i class="fas fa-user-plus"></i></div>
+              <div>
+                <div class="a-text"><strong>Marie Dupont</strong> a été inscrite comme étudiant</div>
+                <div class="a-time">Il y a 5 minutes</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="a-icon" style="background:var(--blue-dim);color:var(--blue)"><i class="fas fa-video"></i></div>
+              <div>
+                <div class="a-text"><strong>« Algèbre — Leçon 14 »</strong> a été publiée dans Mathématiques</div>
+                <div class="a-time">Il y a 23 minutes</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="a-icon" style="background:var(--amber-dim);color:var(--amber)"><i class="fas fa-pen"></i></div>
+              <div>
+                <div class="a-text"><strong>Jean Martin</strong> a modifié le profil de <strong>Paul K.</strong></div>
+                <div class="a-time">Il y a 1 heure</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="a-icon" style="background:var(--red-dim);color:var(--red)"><i class="fas fa-triangle-exclamation"></i></div>
+              <div>
+                <div class="a-text">Erreur détectée : <strong>lien YouTube invalide</strong> dans « Physique — Leçon 7 »</div>
+                <div class="a-time">Il y a 2 heures</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="a-icon" style="background:var(--purple-dim);color:var(--purple)"><i class="fas fa-toggle-on"></i></div>
+              <div>
+                <div class="a-text">Le compte de <strong>Sophie R.</strong> a été <strong>désactivé</strong></div>
+                <div class="a-time">Il y a 3 heures</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="a-icon" style="background:var(--orange-dim);color:var(--orange)"><i class="fas fa-folder-plus"></i></div>
+              <div>
+                <div class="a-text">Nouvelle catégorie <strong>« Prépa Concours »</strong> créée</div>
+                <div class="a-time">Hier, 17h42</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Stats Panel -->
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div class="card">
+            <div class="card-header"><h3><i class="fas fa-chart-bar" style="color:var(--green);margin-right:8px"></i>Inscriptions — 7 derniers jours</h3></div>
+            <div class="card-body">
+              <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:6px;height:70px;padding:0 4px;">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;"><div style="flex:1;width:100%;max-width:28px;background:var(--blue);border-radius:4px 4px 0 0;align-self:flex-end;" title="Lun"></div><span style="font-size:0.6rem;color:var(--text-muted)">L</span></div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;"><div style="flex:1;width:100%;max-width:28px;background:var(--blue);border-radius:4px 4px 0 0;align-self:flex-end;height:55%;" title="Mar"></div><span style="font-size:0.6rem;color:var(--text-muted)">M</span></div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;"><div style="flex:1;width:100%;max-width:28px;background:var(--blue);border-radius:4px 4px 0 0;align-self:flex-end;height:80%;" title="Mer"></div><span style="font-size:0.6rem;color:var(--text-muted)">M</span></div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;"><div style="flex:1;width:100%;max-width:28px;background:var(--green);border-radius:4px 4px 0 0;align-self:flex-end;height:100%;" title="Jeu"></div><span style="font-size:0.6rem;color:var(--text-muted)">J</span></div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;"><div style="flex:1;width:100%;max-width:28px;background:var(--blue);border-radius:4px 4px 0 0;align-self:flex-end;height:60%;" title="Ven"></div><span style="font-size:0.6rem;color:var(--text-muted)">V</span></div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;"><div style="flex:1;width:100%;max-width:28px;background:var(--blue);border-radius:4px 4px 0 0;align-self:flex-end;height:35%;" title="Sam"></div><span style="font-size:0.6rem;color:var(--text-muted)">S</span></div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;"><div style="flex:1;width:100%;max-width:28px;background:var(--blue);border-radius:4px 4px 0 0;align-self:flex-end;height:45%;" title="Dim"></div><span style="font-size:0.6rem;color:var(--text-muted)">D</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3><i class="fas fa-layer-group" style="color:var(--purple);margin-right:8px"></i>Répartition des rôles</h3></div>
+            <div class="card-body" style="display:flex;flex-direction:column;gap:10px;">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <span class="badge badge-blue">Admin</span><div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;"><div style="width:8%;height:100%;background:var(--blue);border-radius:3px;"></div></div><span style="font-size:0.72rem;color:var(--text-muted);width:28px;text-align:right;">3</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <span class="badge badge-amber">Staff</span><div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;"><div style="width:15%;height:100%;background:var(--amber);border-radius:3px;"></div></div><span style="font-size:0.72rem;color:var(--text-muted);width:28px;text-align:right;">8</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <span class="badge badge-green" style="white-space:nowrap;">Enseignant</span><div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;"><div style="width:25%;height:100%;background:var(--green);border-radius:3px;"></div></div><span style="font-size:0.72rem;color:var(--text-muted);width:28px;text-align:right;">12</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <span class="badge badge-purple">Étudiant</span><div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;"><div style="width:100%;height:100%;background:var(--purple);border-radius:3px;"></div></div><span style="font-size:0.72rem;color:var(--text-muted);width:28px;text-align:right;">5225</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PAGE: USERS ========== -->
+    <div class="page" id="page-users">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px;">
+        <div class="filter-bar" style="margin-bottom:0;">
+          <div class="search-wrap"><i class="fas fa-search"></i><input type="text" placeholder="Rechercher un utilisateur..." id="user-search" oninput="filterUsers()"></div>
+          <button class="filter-chip active" onclick="filterRole('all',this)">Tous</button>
+          <button class="filter-chip" onclick="filterRole('admin',this)">Admin</button>
+          <button class="filter-chip" onclick="filterRole('staff',this)">Staff</button>
+          <button class="filter-chip" onclick="filterRole('enseignant',this)">Enseignant</button>
+          <button class="filter-chip" onclick="filterRole('étudiant',this)">Étudiant</button>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('user-modal','create')"><i class="fas fa-plus"></i> Nouvel utilisateur</button>
+      </div>
+
+      <div class="card">
+        <div class="table-wrap">
+          <table id="users-table">
+            <thead>
+              <tr>
+                <th style="width:40px;"><input type="checkbox" style="accent-color:var(--blue);cursor:pointer;" onchange="selectAll(this)"></th>
+                <th>Utilisateur</th>
+                <th>Email</th>
+                <th>Rôle</th>
+                <th>Inscrit le</th>
+                <th>Actif</th>
+                <th style="text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="users-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PAGE: CONTENT ========== -->
+    <div class="page" id="page-content">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px;">
+        <div class="filter-bar" style="margin-bottom:0;">
+          <div class="search-wrap"><i class="fas fa-search"></i><input type="text" placeholder="Rechercher du contenu..." id="content-search" oninput="filterContent()"></div>
+          <button class="filter-chip active" onclick="filterStatus('all',this,'content')">Tous</button>
+          <button class="filter-chip" onclick="filterStatus('publié',this,'content')">Publié</button>
+          <button class="filter-chip" onclick="filterStatus('brouillon',this,'content')">Brouillon</button>
+          <button class="filter-chip" onclick="filterStatus('désactivé',this,'content')">Désactivé</button>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('content-modal','create')"><i class="fas fa-plus"></i> Nouvelle vidéo</button>
+      </div>
+
+      <div class="card">
+        <div class="table-wrap">
+          <table id="content-table">
+            <thead>
+              <tr>
+                <th>Titre</th>
+                <th>Matière</th>
+                <th>Catégorie</th>
+                <th>Durée</th>
+                <th>Statut</th>
+                <th>Actif</th>
+                <th style="text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="content-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PAGE: SUBJECTS ========== -->
+    <div class="page" id="page-subjects">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+        <div class="filter-bar" style="margin-bottom:0;">
+          <div class="search-wrap"><i class="fas fa-search"></i><input type="text" placeholder="Rechercher une matière..." id="subject-search" oninput="filterSubjects()"></div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('subject-modal','create')"><i class="fas fa-plus"></i> Nouvelle matière</button>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table id="subjects-table">
+            <thead><tr><th>Matière</th><th>Niveau</th><th>Vidéos</th><th>Créée le</th><th>Actif</th><th style="text-align:right;">Actions</th></tr></thead>
+            <tbody id="subjects-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PAGE: CATEGORIES ========== -->
+    <div class="page" id="page-categories">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+        <div class="filter-bar" style="margin-bottom:0;">
+          <div class="search-wrap"><i class="fas fa-search"></i><input type="text" placeholder="Rechercher une catégorie..." id="cat-search" oninput="filterCategories()"></div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('category-modal','create')"><i class="fas fa-plus"></i> Nouvelle catégorie</button>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table id="categories-table">
+            <thead><tr><th>Catégorie</th><th>Type</th><th>Matières liées</th><th>Créée le</th><th>Actif</th><th style="text-align:right;">Actions</th></tr></thead>
+            <tbody id="categories-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PAGE: ERRORS ========== -->
+    <div class="page" id="page-errors">
+      <div class="card">
+        <div class="card-header"><h3><i class="fas fa-triangle-exclamation" style="color:var(--red);margin-right:8px"></i>Erreurs de contenu détectées</h3><span class="badge badge-red">2 erreurs</span></div>
+        <div class="card-body">
+          <div class="activity-item" style="padding:14px 0;">
+            <div class="a-icon" style="background:var(--red-dim);color:var(--red);width:38px;height:38px;"><i class="fas fa-link"></i></div>
+            <div style="flex:1;">
+              <div class="a-text"><strong>Lien YouTube invalide</strong> — « Physique — Leçon 7 »</div>
+              <div class="a-time">Détecté il y a 2 heures · Matière : Physique · Catégorie : Secondaire</div>
+            </div>
+            <button class="btn btn-ghost btn-sm"><i class="fas fa-pen"></i> Corriger</button>
+          </div>
+          <div class="activity-item" style="padding:14px 0;">
+            <div class="a-icon" style="background:var(--amber-dim);color:var(--amber);width:38px;height:38px;"><i class="fas fa-file-alt"></i></div>
+            <div style="flex:1;">
+              <div class="a-text"><strong>Description manquante</strong> — « Chimie — Introduction »</div>
+              <div class="a-time">Détecté il y a 5 heures · Matière : Chimie · Catégorie : Secondaire</div>
+            </div>
+            <button class="btn btn-ghost btn-sm"><i class="fas fa-pen"></i> Corriger</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PAGE: SETTINGS ========== -->
+    <div class="page" id="page-settings">
+      <div class="card" style="margin-bottom:18px;">
+        <div class="card-header"><h3><i class="fas fa-sliders" style="color:var(--blue);margin-right:8px"></i>Paramètres généraux</h3></div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group"><label>Nom de la plateforme</label><input type="text" value="WilfriedÉducation"></div>
+            <div class="form-group"><label>URL du site</label><input type="text" value="https://wilfrieducation.com"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Email de contact</label><input type="text" value="contact@wilfrieducation.com"></div>
+            <div class="form-group"><label>Fuseau horaire</label><select><option>Africa/Douala (UTC+1)</option></select></div>
+          </div>
+          <div style="margin-top:18px;display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);">
+              <div><div style="font-size:0.82rem;font-weight:500;">Permettre l'inscription publique</div><div style="font-size:0.7rem;color:var(--text-muted);">Les utilisateurs peuvent se créer un compte</div></div>
+              <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);">
+              <div><div style="font-size:0.82rem;font-weight:500;">Mode maintenance</div><div style="font-size:0.7rem;color:var(--text-muted);">Masque le site public, seuls les admins peuvent accéder</div></div>
+              <label class="toggle"><input type="checkbox"><span class="slider"></span></label>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;">
+              <div><div style="font-size:0.82rem;font-weight:500;">Notifications par email</div><div style="font-size:0.7rem;color:var(--text-muted);">Recevoir les alertes sur les erreurs de contenu</div></div>
+              <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+            </div>
+          </div>
+          <div style="margin-top:20px;"><button class="btn btn-primary"><i class="fas fa-floppy-disk"></i> Sauvegarder</button></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end .content -->
+</div><!-- end .main -->
+
+<!-- ========== MODALS ========== -->
+<!-- USER MODAL -->
+<div class="modal-overlay" id="user-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="user-modal-title">Créer un utilisateur</h3>
+      <button class="close-btn" onclick="closeModal('user-modal')"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label>Prénom</label><input type="text" id="u-fname" placeholder="Ex : Marie"></div>
+        <div class="form-group"><label>Nom</label><input type="text" id="u-lname" placeholder="Ex : Dupont"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Email</label><input type="email" id="u-email" placeholder="marie@example.com"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Rôle</label>
+          <select id="u-role"><option value="étudiant">Étudiant</option><option value="enseignant">Enseignant</option><option value="staff">Staff</option><option value="admin">Admin</option></select>
+        </div>
+        <div class="form-group"><label>Mot de passe</label><input type="password" id="u-pass" placeholder="Mot de passe temporaire"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:8px;">
+        <label class="toggle"><input type="checkbox" id="u-active" checked><span class="slider"></span></label>
+        <span style="font-size:0.78rem;color:var(--text-secondary);">Compte actif</span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('user-modal')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveUser()"><i class="fas fa-floppy-disk"></i> Sauvegarder</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT MODAL -->
+<div class="modal-overlay" id="content-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="content-modal-title">Ajouter une vidéo</h3>
+      <button class="close-btn" onclick="closeModal('content-modal')"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label>Titre de la vidéo</label><input type="text" id="c-title" placeholder="Ex : Algèbre — Leçon 14"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Lien YouTube</label><input type="text" id="c-youtube" placeholder="https://youtube.com/watch?v=..."></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Matière</label>
+          <select id="c-subject"><option>Mathématiques</option><option>Physique</option><option>Chimie</option><option>Biologie</option><option>Français</option><option>Histoire</option><option>Géographie</option><option>Informatique</option></select>
+        </div>
+        <div class="form-group"><label>Catégorie</label>
+          <select id="c-category"><option>Primaire</option><option>Secondaire</option><option>Supérieur</option><option>Prépa Concours</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Description</label><input type="text" id="c-desc" placeholder="Description de la vidéo..."></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Statut</label>
+          <select id="c-status"><option value="brouillon">Brouillon</option><option value="publié">Publié</option><option value="désactivé">Désactivé</option></select>
+        </div>
+        <div class="form-group"><label>Durée (min)</label><input type="number" id="c-duration" placeholder="15"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('content-modal')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveContent()"><i class="fas fa-floppy-disk"></i> Sauvegarder</button>
+    </div>
+  </div>
+</div>
+
+<!-- SUBJECT MODAL -->
+<div class="modal-overlay" id="subject-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Nouvelle matière</h3>
+      <button class="close-btn" onclick="closeModal('subject-modal')"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label>Nom de la matière</label><input type="text" id="s-name" placeholder="Ex : Mathématiques"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Niveau</label>
+          <select id="s-level"><option>Primaire</option><option>Secondaire</option><option>Supérieur</option><option>Tous niveaux</option></select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('subject-modal')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveSubject()"><i class="fas fa-floppy-disk"></i> Sauvegarder</button>
+    </div>
+  </div>
+</div>
+
+<!-- CATEGORY MODAL -->
+<div class="modal-overlay" id="category-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Nouvelle catégorie</h3>
+      <button class="close-btn" onclick="closeModal('category-modal')"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label>Nom de la catégorie</label><input type="text" id="cat-name" placeholder="Ex : Prépa Concours"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Type</label>
+          <select id="cat-type"><option>Niveau scolaire</option><option>Spécialisation</option><option>Préparation</option></select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('category-modal')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveCategory()"><i class="fas fa-floppy-disk"></i> Sauvegarder</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESET PASSWORD MODAL -->
+<div class="modal-overlay" id="reset-modal">
+  <div class="modal" style="width:420px;">
+    <div class="modal-head">
+      <h3><i class="fas fa-key" style="color:var(--amber);margin-right:8px"></i>Réinitialiser le mot de passe</h3>
+      <button class="close-btn" onclick="closeModal('reset-modal')"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:0.78rem;color:var(--text-secondary);margin-bottom:14px;" id="reset-user-name">Réinitialiser le mot de passe pour <strong>—</strong></p>
+      <div class="form-group">
+        <label>Nouveau mot de passe</label>
+        <input type="password" id="reset-pass" placeholder="Nouveau mot de passe">
+      </div>
+      <div class="form-group" style="margin-top:10px;">
+        <label>Confirmer</label>
+        <input type="password" id="reset-pass-confirm" placeholder="Confirmer le mot de passe">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('reset-modal')">Annuler</button>
+      <button class="btn btn-primary" onclick="closeModal('reset-modal')"><i class="fas fa-key"></i> Réinitialiser</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== JAVASCRIPT ========== -->
+<script>
+// ============ MOCK DATA ============
+let users = [
+  { id:1, fname:'Wilfried', lname:'Abena', email:'wilfried@admin.com', role:'admin', date:'2025-01-15', active:true },
+  { id:2, fname:'Jean', lname:'Martin', email:'jean.martin@staff.cm', role:'staff', date:'2025-02-03', active:true },
+  { id:3, fname:'Marie', lname:'Dupont', email:'marie.d@edu.cm', role:'étudiant', date:'2026-01-28', active:true },
+  { id:4, fname:'Paul', lname:'Kamerun', email:'paul.k@edu.cm', role:'enseignant', date:'2025-03-10', active:true },
+  { id:5, fname:'Sophie', lname:'Rousse', email:'sophie.r@edu.cm', role:'étudiant', date:'2025-06-22', active:false },
+  { id:6, fname:'Alice', lname:'Nkondo', email:'alice.n@edu.cm', role:'enseignant', date:'2025-04-18', active:true },
+  { id:7, fname:'David', lname:'Lebou', email:'david.l@edu.cm', role:'staff', date:'2025-05-05', active:true },
+  { id:8, fname:'Aminatou', lname:'Samba', email:'ami.s@edu.cm', role:'étudiant', date:'2025-08-12', active:true },
+  { id:9, fname:'Clément', lname:'Vouga', email:'clement.v@edu.cm', role:'admin', date:'2025-01-20', active:true },
+  { id:10, fname:'Laura', lname:'Tsinga', email:'laura.t@edu.cm', role:'étudiant', date:'2025-11-30', active:true },
+];
+
+let contents = [
+  { id:1, title:'Algèbre — Leçon 14', subject:'Mathématiques', category:'Secondaire', duration:'18', status:'publié', active:true },
+  { id:2, title:'Physique — Leçon 7', subject:'Physique', category:'Secondaire', duration:'22', status:'publié', active:true },
+  { id:3, title:'Chimie — Introduction', subject:'Chimie', category:'Secondaire', duration:'15', status:'brouillon', active:true },
+  { id:4, title:'Biologie — Cellule', subject:'Biologie', category:'Secondaire', duration:'20', status:'publié', active:true },
+  { id:5, title:'Français — Grammaire', subject:'Français', category:'Primaire', duration:'12', status:'publié', active:true },
+  { id:6, title:'Histoire — Révolution', subject:'Histoire', category:'Supérieur', duration:'35', status:'publié', active:false },
+  { id:7, title:'Géographie — Climat', subject:'Géographie', category:'Primaire', duration:'14', status:'brouillon', active:true },
+  { id:8, title:'Informatique — Python', subject:'Informatique', category:'Supérieur', duration:'45', status:'publié', active:true },
+  { id:9, title:'Mathématiques — Intégrales', subject:'Mathématiques', category:'Supérieur', duration:'28', status:'désactivé', active:false },
+  { id:10, title:'Physique — Optique', subject:'Physique', category:'Secondaire', duration:'19', status:'publié', active:true },
+];
+
+let subjects = [
+  { id:1, name:'Mathématiques', level:'Tous niveaux', videos:42, date:'2025-01-10', active:true },
+  { id:2, name:'Physique', level:'Secondaire', videos:28, date:'2025-01-12', active:true },
+  { id:3, name:'Chimie', level:'Secondaire', videos:15, date:'2025-02-05', active:true },
+  { id:4, name:'Biologie', level:'Secondaire', videos:22, date:'2025-02-18', active:true },
+  { id:5, name:'Français', level:'Tous niveaux', videos:35, date:'2025-01-08', active:true },
+  { id:6, name:'Histoire', level:'Supérieur', videos:18, date:'2025-03-01', active:true },
+  { id:7, name:'Géographie', level:'Primaire', videos:12, date:'2025-03-15', active:true },
+  { id:8, name:'Informatique', level:'Supérieur', videos:30, date:'2025-04-02', active:true },
+];
+
+let categories = [
+  { id:1, name:'Primaire', type:'Niveau scolaire', subjects:3, date:'2025-01-05', active:true },
+  { id:2, name:'Secondaire', type:'Niveau scolaire', subjects:5, date:'2025-01-05', active:true },
+  { id:3, name:'Supérieur', type:'Niveau scolaire', subjects:4, date:'2025-01-05', active:true },
+  { id:4, name:'Prépa Concours', type:'Spécialisation', subjects:6, date:'2025-06-10', active:true },
+  { id:5, name:'Rattrapage', type:'Préparation', subjects:8, date:'2025-08-20', active:true },
+];
+
+// ============ NAVIGATION ============
+const pageTitles = {
+  dashboard: ['Tableau de bord', 'Bienvenue, voici un aperçu de votre plateforme'],
+  users: ['Gestion des utilisateurs', 'Créer, modifier et gérer les comptes'],
+  content: ['Gestion du contenu', 'Vidéos, descriptions et liens YouTube'],
+  subjects: ['Matières', 'Gérer les matières disponibles'],
+  categories: ['Catégories', 'Organiser le contenu par catégorie'],
+  errors: ['Erreurs détectées', 'Problèmes nécessitant votre attention'],
+  settings: ['Paramètres', 'Configuration de la plateforme'],
+};
+
+function navigate(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelector(`.nav-item[onclick="navigate('${page}')"]`).classList.add('active');
+
+  document.getElementById('page-title').textContent = pageTitles[page][0];
+  document.getElementById('page-sub').textContent = pageTitles[page][1];
+
+  // Render tables on demand
+  if (page === 'users') renderUsers(users);
+  if (page === 'content') renderContent(contents);
+  if (page === 'subjects') renderSubjects(subjects);
+  if (page === 'categories') renderCategories(categories);
+}
+
+// ============ MODALS ============
+function openModal(id, mode) {
+  document.getElementById(id).classList.add('open');
+  // Clear fields
+  const inputs = document.querySelectorAll('#' + id + ' input[type=text], #' + id + ' input[type=email], #' + id + ' input[type=password], #' + id + ' input[type=number]');
+  inputs.forEach(i => i.value = '');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+// Close modal on overlay click
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('open'); });
+});
+
+// ============ RENDER USERS ============
+function renderUsers(data) {
+  const tbody = document.getElementById('users-tbody');
+  const roleBadge = { admin:'badge-blue', staff:'badge-amber', enseignant:'badge-green', 'étudiant':'badge-purple' };
+  tbody.innerHTML = data.map(u => `
+    <tr>
+      <td><input type="checkbox" class="row-check" style="accent-color:var(--blue);cursor:pointer;" data-id="${u.id}"></td>
+      <td><div style="display:flex;align-items:center;gap:9px;">
+        <div style="width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:#fff;">${u.fname[0]}${u.lname[0]}</div>
+        <div><div style="font-size:0.82rem;color:var(--text-primary);font-weight:500;">${u.fname} ${u.lname}</div></div>
+      </div></td>
+      <td>${u.email}</td>
+      <td><span class="badge ${roleBadge[u.role]}">${u.role}</span></td>
+      <td>${u.date}</td>
+      <td><label class="toggle"><input type="checkbox" ${u.active?'checked':''} onchange="toggleUser(${u.id},this)"><span class="slider"></span></label></td>
+      <td style="text-align:right;">
+        <div style="display:flex;gap:6px;justify-content:flex-end;">
+          <button class="btn btn-ghost btn-sm" onclick="editUser(${u.id})"><i class="fas fa-pen"></i></button>
+          <button class="btn btn-ghost btn-sm" onclick="resetPassword(${u.id})"><i class="fas fa-key"></i></button>
+          <button class="btn btn-danger btn-sm" onclick="deleteUser(${u.id})"><i class="fas fa-trash"></i></button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function toggleUser(id, el) {
+  const u = users.find(x => x.id === id);
+  if (u) u.active = el.checked;
+}
+
+function editUser(id) {
+  const u = users.find(x => x.id === id);
+  if (!u) return;
+  document.getElementById('user-modal-title').textContent = 'Modifier — ' + u.fname + ' ' + u.lname;
+  document.getElementById('u-fname').value = u.fname;
+  document.getElementById('u-lname').value = u.lname;
+  document.getElementById('u-email').value = u.email;
+  document.getElementById('u-role').value = u.role;
+  document.getElementById('u-active').checked = u.active;
+  document.getElementById('u-pass').value = '';
+  openModal('user-modal');
+}
+
+function resetPassword(id) {
+  const u = users.find(x => x.id === id);
+  document.getElementById('reset-user-name').innerHTML = `Réinitialiser le mot de passe pour <strong>${u.fname} ${u.lname}</strong>`;
+  document.getElementById('reset-modal').classList.add('open');
+}
+
+function deleteUser(id) {
+  if (confirm('Supprimer cet utilisateur ?')) {
+    users = users.filter(u => u.id !== id);
+    renderUsers(users);
+  }
+}
+
+function saveUser() {
+  const fname = document.getElementById('u-fname').value.trim();
+  const lname = document.getElementById('u-lname').value.trim();
+  const email = document.getElementById('u-email').value.trim();
+  if (!fname || !lname || !email) return alert('Remplissez tous les champs obligatoires.');
+  const existing = users.find(u => u.email === email);
+  if (!existing) {
+    users.push({
+      id: users.length + 1,
+      fname, lname, email,
+      role: document.getElementById('u-role').value,
+      date: new Date().toISOString().split('T')[0],
+      active: document.getElementById('u-active').checked
+    });
+  } else {
+    existing.fname = fname;
+    existing.lname = lname;
+    existing.role = document.getElementById('u-role').value;
+    existing.active = document.getElementById('u-active').checked;
+  }
+  closeModal('user-modal');
+  renderUsers(users);
+}
+
+function filterUsers() {
+  const q = document.getElementById('user-search').value.toLowerCase();
+  const chip = document.querySelector('.filter-chip.active[onclick*="filterRole"]');
+  const role = chip ? chip.getAttribute('onclick').match(/'([^']+)'/)[1] : 'all';
+  let data = users;
+  if (role !== 'all') data = data.filter(u => u.role === role);
+  if (q) data = data.filter(u => (u.fname + ' ' + u.lname + ' ' + u.email).toLowerCase().includes(q));
+  renderUsers(data);
+}
+
+function filterRole(role, el) {
+  document.querySelectorAll('.filter-chip[onclick*="filterRole"]').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  filterUsers();
+}
+
+function selectAll(el) {
+  document.querySelectorAll('.row-check').forEach(c => c.checked = el.checked);
+}
+
+// ============ RENDER CONTENT ============
+function renderContent(data) {
+  const tbody = document.getElementById('content-tbody');
+  const statusBadge = { 'publié':'badge-green', 'brouillon':'badge-amber', 'désactivé':'badge-red' };
+  tbody.innerHTML = data.map(c => `
+    <tr>
+      <td><div style="font-size:0.82rem;color:var(--text-primary);font-weight:500;">${c.title}</div></td>
+      <td><span class="badge badge-blue">${c.subject}</span></td>
+      <td>${c.category}</td>
+      <td>${c.duration} min</td>
+      <td><span class="badge ${statusBadge[c.status]}">${c.status}</span></td>
+      <td><label class="toggle"><input type="checkbox" ${c.active?'checked':''} onchange="toggleContent(${c.id},this)"><span class="slider"></span></label></td>
+      <td style="text-align:right;">
+        <div style="display:flex;gap:6px;justify-content:flex-end;">
+          <button class="btn btn-ghost btn-sm" onclick="editContent(${c.id})"><i class="fas fa-pen"></i></button>
+          <button class="btn btn-danger btn-sm" onclick="deleteContent(${c.id})"><i class="fas fa-trash"></i></button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function toggleContent(id, el) {
+  const c = contents.find(x => x.id === id);
+  if (c) c.active = el.checked;
+}
+
+function editContent(id) {
+  const c = contents.find(x => x.id === id);
+  if (!c) return;
+  document.getElementById('content-modal-title').textContent = 'Modifier vidéo';
+  document.getElementById('c-title').value = c.title;
+  document.getElementById('c-subject').value = c.subject;
+  document.getElementById('c-category').value = c.category;
+  document.getElementById('c-duration').value = c.duration;
+  document.getElementById('c-status').value = c.status;
+  document.getElementById('c-youtube').value = '';
+  document.getElementById('c-desc').value = '';
+  openModal('content-modal');
+}
+
+function deleteContent(id) {
+  if (confirm('Supprimer cette vidéo ?')) {
+    contents.splice(contents.findIndex(c => c.id === id), 1);
+    renderContent(contents);
+  }
+}
+
+function saveContent() {
+  const title = document.getElementById('c-title').value.trim();
+  if (!title) return alert('Le titre est obligatoire.');
+  contents.push({
+    id: contents.length + 1,
+    title,
+    subject: document.getElementById('c-subject').value,
+    category: document.getElementById('c-category').value,
+    duration: document.getElementById('c-duration').value || '10',
+    status: document.getElementById('c-status').value,
+    active: true
+  });
+  closeModal('content-modal');
+  renderContent(contents);
+}
+
+function filterContent() {
+  const q = document.getElementById('content-search').value.toLowerCase();
+  const chip = document.querySelector('.filter-chip.active[onclick*="filterStatus"][onclick*="content"]');
+  const status = chip ? chip.getAttribute('onclick').match(/'([^']+)'/)[1] : 'all';
+  let data = contents;
+  if (status !== 'all') data = data.filter(c => c.status === status);
+  if (q) data = data.filter(c => (c.title + ' ' + c.subject).toLowerCase().includes(q));
+  renderContent(data);
+}
+
+function filterStatus(status, el, ctx) {
+  const sel = ctx === 'content' ? '[onclick*="filterStatus"][onclick*="content"]' : '[onclick*="filterStatus"]';
+  document.querySelectorAll('.filter-chip' + sel).forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  if (ctx === 'content') filterContent();
+}
+
+// ============ RENDER SUBJECTS ============
+function renderSubjects(data) {
+  const tbody = document.getElementById('subjects-tbody');
+  const lvlBadge = { 'Tous niveaux':'badge-purple', 'Primaire':'badge-blue', 'Secondaire':'badge-amber', 'Supérieur':'badge-green' };
+  tbody.innerHTML = data.map(s => `
+    <tr>
+      <td style="font-size:0.82rem;color:var(--text-primary);font-weight:500;">${s.name}</td>
+      <td><span class="badge ${lvlBadge[s.level]}">${s.level}</span></td>
+      <td><span class="badge badge-blue">${s.videos} vidéos</span></td>
+      <td>${s.date}</td>
+      <td><label class="toggle"><input type="checkbox" ${s.active?'checked':''} onchange="toggleSubject(${s.id},this)"><span class="slider"></span></label></td>
+      <td style="text-align:right;">
+        <div style="display:flex;gap:6px;justify-content:flex-end;">
+          <button class="btn btn-ghost btn-sm" onclick="editSubject(${s.id})"><i class="fas fa-pen"></i></button>
+          <button class="btn btn-danger btn-sm" onclick="deleteSubject(${s.id})"><i class="fas fa-trash"></i></button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function toggleSubject(id, el) { const s = subjects.find(x=>x.id===id); if(s) s.active=el.checked; }
+function editSubject(id) {
+  const s = subjects.find(x=>x.id===id);
+  if(!s) return;
+  document.getElementById('s-name').value = s.name;
+  document.getElementById('s-level').value = s.level;
+  openModal('subject-modal');
+}
+function deleteSubject(id) { if(confirm('Supprimer cette matière ?')){ subjects=subjects.filter(s=>s.id!==id); renderSubjects(subjects); } }
+function saveSubject() {
+  const name = document.getElementById('s-name').value.trim();
+  if(!name) return alert('Le nom est obligatoire.');
+  subjects.push({ id:subjects.length+1, name, level:document.getElementById('s-level').value, videos:0, date:new Date().toISOString().split('T')[0], active:true });
+  closeModal('subject-modal');
+  renderSubjects(subjects);
+}
+function filterSubjects() {
+  const q = document.getElementById('subject-search').value.toLowerCase();
+  renderSubjects(subjects.filter(s => s.name.toLowerCase().includes(q)));
+}
+
+// ============ RENDER CATEGORIES ============
+function renderCategories(data) {
+  const tbody = document.getElementById('categories-tbody');
+  const typeBadge = { 'Niveau scolaire':'badge-blue', 'Spécialisation':'badge-purple', 'Préparation':'badge-orange' };
+  tbody.innerHTML = data.map(c => `
+    <tr>
+      <td style="font-size:0.82rem;color:var(--text-primary);font-weight:500;">${c.name}</td>
+      <td><span class="badge ${typeBadge[c.type]}">${c.type}</span></td>
+      <td>${c.subjects} matières</td>
+      <td>${c.date}</td>
+      <td><label class="toggle"><input type="checkbox" ${c.active?'checked':''} onchange="toggleCategory(${c.id},this)"><span class="slider"></span></label></td>
+      <td style="text-align:right;">
+        <div style="display:flex;gap:6px;justify-content:flex-end;">
+          <button class="btn btn-ghost btn-sm" onclick="editCategory(${c.id})"><i class="fas fa-pen"></i></button>
+          <button class="btn btn-danger btn-sm" onclick="deleteCategory(${c.id})"><i class="fas fa-trash"></i></button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function toggleCategory(id, el) { const c = categories.find(x=>x.id===id); if(c) c.active=el.checked; }
+function editCategory(id) {
+  const c = categories.find(x=>x.id===id);
+  if(!c) return;
+  document.getElementById('cat-name').value = c.name;
+  document.getElementById('cat-type').value = c.type;
+  openModal('category-modal');
+}
+function deleteCategory(id) { if(confirm('Supprimer cette catégorie ?')){ categories=categories.filter(c=>c.id!==id); renderCategories(categories); } }
+function saveCategory() {
+  const name = document.getElementById('cat-name').value.trim();
+  if(!name) return alert('Le nom est obligatoire.');
+  categories.push({ id:categories.length+1, name, type:document.getElementById('cat-type').value, subjects:0, date:new Date().toISOString().split('T')[0], active:true });
+  closeModal('category-modal');
+  renderCategories(categories);
+}
+function filterCategories() {
+  const q = document.getElementById('cat-search').value.toLowerCase();
+  renderCategories(categories.filter(c => c.name.toLowerCase().includes(q)));
+}
+
+// ============ GLOBAL SEARCH ============
+function globalSearch(q) {
+  if (!q) return;
+  q = q.toLowerCase();
+  // Search across all data and navigate to best match
+  const uMatch = users.find(u => (u.fname+' '+u.lname+' '+u.email).toLowerCase().includes(q));
+  const cMatch = contents.find(c => (c.title+' '+c.subject).toLowerCase().includes(q));
+  if (uMatch) navigate('users');
+  else if (cMatch) navigate('content');
+}
+</script>
+</body>
+</html>

@@ -1,27 +1,26 @@
 from django.db import models
 from core.models import BaseModel
 
-# Create your models here.
 class Level(BaseModel):
     """
-    Modèle pour les niveaux scolaires
+    School levels (Primary, Secondary, Higher)
     """
     name = models.CharField(
         max_length=50,
         unique=True,
-        verbose_name="Nom du niveau",
-        help_text="Ex: Primaire, Secondaire, Supérieur"
+        verbose_name="Level name",
+        help_text="Example: Primary, Secondary, Higher"
     )
     description = models.TextField(
         blank=True,
         verbose_name="Description",
-        help_text="Description du niveau"
+        help_text="Level description"
     )
 
     class Meta:
-        verbose_name = "Niveau"
-        verbose_name_plural = "Niveaux"
-        ordering = ['id']
+        verbose_name = "Level"
+        verbose_name_plural = "Levels"
+        ordering = ["id"]
 
     def __str__(self):
         return self.name
@@ -30,26 +29,25 @@ class Level(BaseModel):
 
 class ClassLevel(BaseModel):
     """
-    Modèle pour les classes scolaires
+    School classes
     """
     level = models.ForeignKey(
         Level,
         on_delete=models.CASCADE,
         related_name="classes",
-        verbose_name="Niveau",
-        help_text="Niveau scolaire associé"
+        verbose_name="Level"
     )
     name = models.CharField(
         max_length=50,
-        verbose_name="Nom de la classe",
-        help_text="Ex: CP, CE1, 6e, Terminale, L1"
+        verbose_name="Class name",
+        help_text="Example: CP, CE1, 6th, Terminale, L1"
     )
 
     class Meta:
-        verbose_name = "Classe"
+        verbose_name = "Class"
         verbose_name_plural = "Classes"
-        ordering = ['id']
-        unique_together = ('level', 'name')
+        ordering = ["id"]
+        unique_together = ("level", "name")
 
     def __str__(self):
         return f"{self.name} ({self.level.name})"
@@ -57,159 +55,137 @@ class ClassLevel(BaseModel):
 
 class Subject(BaseModel):
     """
-    Modèle pour les matières
+    School subjects
     """
     class_level = models.ForeignKey(
         ClassLevel,
         on_delete=models.CASCADE,
         related_name="subjects",
-        verbose_name="Classe",
-        help_text="Classe associée"
+        verbose_name="Class"
     )
     name = models.CharField(
         max_length=100,
-        verbose_name="Nom de la matière",
-        help_text="Ex: Mathématiques, Français"
+        verbose_name="Subject name",
+        help_text="Example: Mathematics, French"
     )
 
     class Meta:
-        verbose_name = "Matière"
-        verbose_name_plural = "Matières"
-        ordering = ['id']
-        unique_together = ('class_level', 'name')
+        verbose_name = "Subject"
+        verbose_name_plural = "Subjects"
+        ordering = ["id"]
+        unique_together = ("class_level", "name")
 
     def __str__(self):
         return f"{self.name} - {self.class_level}"
 
-
 class Content(BaseModel):
     """
-    Modèle pour les contenus pédagogiques
+    Educational content
     """
+
     CONTENT_TYPE_CHOICES = (
-        ('course', 'Cours'),
-        ('exam', 'Épreuve'),
-        ('correction', 'Correction'),
+        ("course", "Course"),
+        ("exam", "Exam"),
+        ("correction", "Correction"),
     )
 
     subject = models.ForeignKey(
         Subject,
         on_delete=models.CASCADE,
         related_name="contents",
-        verbose_name="Matière",
-        help_text="Matière associée"
+        verbose_name="Subject"
     )
     title = models.CharField(
         max_length=200,
-        verbose_name="Titre",
-        help_text="Titre du contenu"
+        verbose_name="Title"
     )
     content_type = models.CharField(
         max_length=20,
         choices=CONTENT_TYPE_CHOICES,
-        verbose_name="Type de contenu",
-        help_text="Cours, épreuve ou correction"
+        verbose_name="Content type"
     )
     youtube_url = models.URLField(
-        verbose_name="Lien YouTube",
-        help_text="Lien vers la vidéo YouTube"
+        verbose_name="YouTube link"
     )
     description = models.TextField(
         blank=True,
-        verbose_name="Description",
-        help_text="Description du contenu"
+        verbose_name="Description"
     )
     is_published = models.BooleanField(
         default=True,
-        verbose_name="Publié",
-        help_text="Indique si le contenu est visible"
+        verbose_name="Published"
     )
 
     class Meta:
-        verbose_name = "Contenu"
-        verbose_name_plural = "Contenus"
-        ordering = ['-created_at']
+        verbose_name = "Content"
+        verbose_name_plural = "Contents"
+        ordering = ["-created_at"]
 
     def __str__(self):
         return f"{self.title} ({self.get_content_type_display()})"
 
 class Comment(BaseModel):
     """
-    Modèle pour les commentaires des internautes
+    User comments
     """
     content = models.ForeignKey(
         Content,
         on_delete=models.CASCADE,
         related_name="comments",
-        verbose_name="Contenu",
-        help_text="Contenu commenté"
+        verbose_name="Content"
     )
     author_name = models.CharField(
         max_length=100,
-        verbose_name="Nom de l'auteur",
-        help_text="Nom de l'internaute"
+        verbose_name="Author name"
     )
     message = models.TextField(
-        verbose_name="Message",
-        help_text="Message du commentaire"
+        verbose_name="Message"
     )
     is_approved = models.BooleanField(
         default=False,
-        verbose_name="Approuvé",
-        help_text="Commentaire validé par l'administrateur"
+        verbose_name="Approved"
     )
 
     class Meta:
-        verbose_name = "Commentaire"
-        verbose_name_plural = "Commentaires"
-        ordering = ['-created_at']
+        verbose_name = "Comment"
+        verbose_name_plural = "Comments"
+        ordering = ["-created_at"]
 
     def __str__(self):
-        return f"Commentaire de {self.author_name}"
+        return f"Comment by {self.author_name}"
+
     
 
 class Video(BaseModel):
     """
-    Model for educational videos
+    Educational videos
     """
 
     title = models.CharField(
         max_length=200,
-        verbose_name="Title",
-        help_text="Educational video title"
+        verbose_name="Title"
     )
 
     description = models.TextField(
         blank=True,
-        verbose_name="Description",
-        help_text="Video description"
+        verbose_name="Description"
     )
 
     youtube_link = models.URLField(
-        verbose_name="YouTube link",
-        help_text="Link to the YouTube video"
+        verbose_name="YouTube link"
     )
 
-    subject = models.ForeignKey(
-        "education.Subject",  # recommended string reference
+    content = models.ForeignKey(
+        Content,
         on_delete=models.CASCADE,
         related_name="videos",
-        verbose_name="Subject",
-        help_text="Subject related to the video"
-    )
-
-    content_type = models.ForeignKey(
-        "education.ContentType",  # recommended string reference
-        on_delete=models.CASCADE,
-        related_name="videos",
-        verbose_name="Content type",
-        help_text="Content type: course, exam or correction"
+        verbose_name="Content",
+        help_text="Related educational content"
     )
 
     is_published = models.BooleanField(
         default=True,
-        verbose_name="Published",
-        help_text="Indicates whether the video is visible to users"
+        verbose_name="Published"
     )
 
     class Meta:
@@ -219,3 +195,4 @@ class Video(BaseModel):
 
     def __str__(self):
         return self.title
+
