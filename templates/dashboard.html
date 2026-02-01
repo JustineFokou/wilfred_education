@@ -478,6 +478,9 @@ tbody tr:hover { background: var(--bg-card-hover); }
     <div class="nav-item" onclick="navigate('categories')">
       <i class="fas fa-layer-group"></i><span>Catégories</span>
     </div>
+    <div class="nav-item" onclick="navigate('exams')">
+      <i class="fas fa-file-alt"></i><span>Épreuves & Corrigés</span>
+    </div>
 
     <div class="nav-section-label">Contrôle</div>
     <div class="nav-item" onclick="navigate('errors')">
@@ -752,6 +755,40 @@ tbody tr:hover { background: var(--bg-card-hover); }
       </div>
     </div>
 
+    <!-- ========== PAGE: EXAMS & CORRECTIONS ========== -->
+    <div class="page" id="page-exams">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px;">
+        <div class="filter-bar" style="margin-bottom:0;">
+          <div class="search-wrap"><i class="fas fa-search"></i><input type="text" placeholder="Rechercher une épreuve..." id="exam-search" oninput="filterExams()"></div>
+          <button class="filter-chip active" onclick="filterExamType('all',this)">Tous</button>
+          <button class="filter-chip" onclick="filterExamType('exam',this)">Épreuves</button>
+          <button class="filter-chip" onclick="filterExamType('correction',this)">Corrigés</button>
+          <button class="filter-chip" onclick="filterExamType('mixed',this)">Ensemble</button>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('exam-modal','create')"><i class="fas fa-plus"></i> Nouvelle épreuve</button>
+      </div>
+
+      <div class="card">
+        <div class="table-wrap">
+          <table id="exams-table">
+            <thead>
+              <tr>
+                <th>Titre</th>
+                <th>Type</th>
+                <th>Matière</th>
+                <th>Niveau</th>
+                <th>Année</th>
+                <th>Fichier</th>
+                <th>Statut</th>
+                <th style="text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="exams-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
     <!-- ========== PAGE: ERRORS ========== -->
     <div class="page" id="page-errors">
       <div class="card">
@@ -933,6 +970,69 @@ tbody tr:hover { background: var(--bg-card-hover); }
   </div>
 </div>
 
+<!-- EXAM MODAL -->
+<div class="modal-overlay" id="exam-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="exam-modal-title">Ajouter une épreuve/corrigé</h3>
+      <button class="close-btn" onclick="closeModal('exam-modal')"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label>Titre de l'épreuve</label><input type="text" id="e-title" placeholder="Ex : BAC 2023 Mathématiques"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Type</label>
+          <select id="e-type">
+            <option value="exam">Épreuve seule</option>
+            <option value="correction">Corrigé seul</option>
+            <option value="mixed">Épreuve + Corrigé</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Matière</label>
+          <select id="e-subject">
+            <option>Mathématiques</option><option>Physique</option><option>Chimie</option>
+            <option>Biologie</option><option>Français</option><option>Histoire</option>
+            <option>Géographie</option><option>Informatique</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Niveau</label>
+          <select id="e-level">
+            <option>Primaire</option>
+            <option>Secondaire</option>
+            <option>Supérieur</option>
+            <option>Concours</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Année</label><input type="text" id="e-year" placeholder="Ex : 2023" value="2023"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Fichier PDF (épreuve)</label><input type="text" id="e-file-exam" placeholder="URL ou chemin du fichier"></div>
+        <div class="form-group"><label>Fichier PDF (corrigé)</label><input type="text" id="e-file-correction" placeholder="URL ou chemin du fichier"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Durée (minutes)</label><input type="number" id="e-duration" placeholder="180"></div>
+        <div class="form-group"><label>Note sur</label><input type="number" id="e-total" placeholder="20"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Description</label>
+          <input type="text" id="e-desc" placeholder="Description de l'épreuve...">
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:8px;">
+        <label class="toggle"><input type="checkbox" id="e-active" checked><span class="slider"></span></label>
+        <span style="font-size:0.78rem;color:var(--text-secondary);">Actif sur la plateforme</span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('exam-modal')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveExam()"><i class="fas fa-floppy-disk"></i> Sauvegarder</button>
+    </div>
+  </div>
+</div>
+
 <!-- RESET PASSWORD MODAL -->
 <div class="modal-overlay" id="reset-modal">
   <div class="modal" style="width:420px;">
@@ -1006,6 +1106,15 @@ let categories = [
   { id:5, name:'Rattrapage', type:'Préparation', subjects:8, date:'2025-08-20', active:true },
 ];
 
+let exams = [
+  { id:1, title:'BAC 2023 Mathématiques', type:'mixed', subject:'Mathématiques', level:'Secondaire', year:'2023', fileExam:'bac_2023_maths.pdf', fileCorrection:'bac_2023_maths_corr.pdf', duration:240, total:20, description:'Épreuve officielle du BAC 2023', active:true },
+  { id:2, title:'BEPC 2023 Français', type:'exam', subject:'Français', level:'Secondaire', year:'2023', fileExam:'bepc_2023_francais.pdf', fileCorrection:'', duration:180, total:20, description:'Épreuve de français BEPC', active:true },
+  { id:3, title:'Probatoire 2023 Physique-Chimie', type:'mixed', subject:'Physique', level:'Secondaire', year:'2023', fileExam:'probatoire_2023_physique.pdf', fileCorrection:'probatoire_2023_physique_corr.pdf', duration:210, total:20, description:'Physique-Chimie Probatoire', active:true },
+  { id:4, title:'Concours ENS 2023 Mathématiques', type:'correction', subject:'Mathématiques', level:'Concours', year:'2023', fileExam:'', fileCorrection:'concours_ens_2023_maths_corr.pdf', duration:300, total:40, description:'Corrigé officiel', active:true },
+  { id:5, title:'CEPE 2023 Mathématiques', type:'exam', subject:'Mathématiques', level:'Primaire', year:'2023', fileExam:'cepe_2023_maths.pdf', fileCorrection:'', duration:90, total:20, description:'Examen de fin de primaire', active:false },
+  { id:6, title:'Licence 2023 Informatique', type:'mixed', subject:'Informatique', level:'Supérieur', year:'2023', fileExam:'licence_2023_info.pdf', fileCorrection:'licence_2023_info_corr.pdf', duration:180, total:30, description:'Examen de programmation', active:true },
+];
+
 // ============ NAVIGATION ============
 const pageTitles = {
   dashboard: ['Tableau de bord', 'Bienvenue, voici un aperçu de votre plateforme'],
@@ -1013,6 +1122,7 @@ const pageTitles = {
   content: ['Gestion du contenu', 'Vidéos, descriptions et liens YouTube'],
   subjects: ['Matières', 'Gérer les matières disponibles'],
   categories: ['Catégories', 'Organiser le contenu par catégorie'],
+  exams: ['Épreuves & Corrigés', 'Gérer les épreuves et corrections'],
   errors: ['Erreurs détectées', 'Problèmes nécessitant votre attention'],
   settings: ['Paramètres', 'Configuration de la plateforme'],
 };
@@ -1032,6 +1142,7 @@ function navigate(page) {
   if (page === 'content') renderContent(contents);
   if (page === 'subjects') renderSubjects(subjects);
   if (page === 'categories') renderCategories(categories);
+  if (page === 'exams') renderExams(exams);
 }
 
 // ============ MODALS ============
@@ -1057,7 +1168,7 @@ function renderUsers(data) {
     <tr>
       <td><input type="checkbox" class="row-check" style="accent-color:var(--blue);cursor:pointer;" data-id="${u.id}"></td>
       <td><div style="display:flex;align-items:center;gap:9px;">
-        <div style="width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:#fff;">${u.fname[0]}${u.lname[0]}</div>
+        <div style="width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-center;font-size:0.7rem;font-weight:700;color:#fff;">${u.fname[0]}${u.lname[0]}</div>
         <div><div style="font-size:0.82rem;color:var(--text-primary);font-weight:500;">${u.fname} ${u.lname}</div></div>
       </div></td>
       <td>${u.email}</td>
@@ -1313,6 +1424,119 @@ function saveCategory() {
 function filterCategories() {
   const q = document.getElementById('cat-search').value.toLowerCase();
   renderCategories(categories.filter(c => c.name.toLowerCase().includes(q)));
+}
+
+// ============ RENDER EXAMS ============
+function renderExams(data) {
+  const tbody = document.getElementById('exams-tbody');
+  const typeBadge = { 
+    'exam': '<span class="badge badge-blue">Épreuve</span>',
+    'correction': '<span class="badge badge-green">Corrigé</span>',
+    'mixed': '<span class="badge badge-purple">Épreuve+Corrigé</span>'
+  };
+  const levelBadge = { 
+    'Primaire': 'badge-blue', 
+    'Secondaire': 'badge-amber', 
+    'Supérieur': 'badge-green',
+    'Concours': 'badge-purple'
+  };
+  
+  tbody.innerHTML = data.map(e => `
+    <tr>
+      <td><div style="font-size:0.82rem;color:var(--text-primary);font-weight:500;">${e.title}</div></td>
+      <td>${typeBadge[e.type]}</td>
+      <td><span class="badge badge-blue">${e.subject}</span></td>
+      <td><span class="badge ${levelBadge[e.level]}">${e.level}</span></td>
+      <td>${e.year}</td>
+      <td>
+        <div style="display:flex;gap:5px;">
+          ${e.fileExam ? `<span class="badge badge-blue" style="cursor:pointer;" onclick="openFile('${e.fileExam}')"><i class="fas fa-file-pdf"></i></span>` : ''}
+          ${e.fileCorrection ? `<span class="badge badge-green" style="cursor:pointer;" onclick="openFile('${e.fileCorrection}')"><i class="fas fa-check-circle"></i></span>` : ''}
+        </div>
+      </td>
+      <td><label class="toggle"><input type="checkbox" ${e.active?'checked':''} onchange="toggleExam(${e.id},this)"><span class="slider"></span></label></td>
+      <td style="text-align:right;">
+        <div style="display:flex;gap:6px;justify-content:flex-end;">
+          <button class="btn btn-ghost btn-sm" onclick="editExam(${e.id})"><i class="fas fa-pen"></i></button>
+          <button class="btn btn-danger btn-sm" onclick="deleteExam(${e.id})"><i class="fas fa-trash"></i></button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function toggleExam(id, el) {
+  const e = exams.find(x => x.id === id);
+  if (e) e.active = el.checked;
+}
+
+function editExam(id) {
+  const e = exams.find(x => x.id === id);
+  if (!e) return;
+  document.getElementById('exam-modal-title').textContent = 'Modifier épreuve';
+  document.getElementById('e-title').value = e.title;
+  document.getElementById('e-type').value = e.type;
+  document.getElementById('e-subject').value = e.subject;
+  document.getElementById('e-level').value = e.level;
+  document.getElementById('e-year').value = e.year;
+  document.getElementById('e-file-exam').value = e.fileExam;
+  document.getElementById('e-file-correction').value = e.fileCorrection;
+  document.getElementById('e-duration').value = e.duration;
+  document.getElementById('e-total').value = e.total;
+  document.getElementById('e-desc').value = e.description;
+  document.getElementById('e-active').checked = e.active;
+  openModal('exam-modal');
+}
+
+function deleteExam(id) {
+  if (confirm('Supprimer cette épreuve ?')) {
+    exams.splice(exams.findIndex(e => e.id === id), 1);
+    renderExams(exams);
+  }
+}
+
+function saveExam() {
+  const title = document.getElementById('e-title').value.trim();
+  if (!title) return alert('Le titre est obligatoire.');
+  
+  const newExam = {
+    id: exams.length + 1,
+    title,
+    type: document.getElementById('e-type').value,
+    subject: document.getElementById('e-subject').value,
+    level: document.getElementById('e-level').value,
+    year: document.getElementById('e-year').value || '2023',
+    fileExam: document.getElementById('e-file-exam').value.trim(),
+    fileCorrection: document.getElementById('e-file-correction').value.trim(),
+    duration: parseInt(document.getElementById('e-duration').value) || 180,
+    total: parseInt(document.getElementById('e-total').value) || 20,
+    description: document.getElementById('e-desc').value.trim(),
+    active: document.getElementById('e-active').checked
+  };
+  
+  exams.push(newExam);
+  closeModal('exam-modal');
+  renderExams(exams);
+}
+
+function openFile(filename) {
+  alert(`Ouverture du fichier : ${filename}\n\nDans une version réelle, cela ouvrirait le PDF ou téléchargerait le fichier.`);
+}
+
+function filterExams() {
+  const q = document.getElementById('exam-search').value.toLowerCase();
+  const chip = document.querySelector('.filter-chip.active[onclick*="filterExamType"]');
+  const type = chip ? chip.getAttribute('onclick').match(/'([^']+)'/)[1] : 'all';
+  let data = exams;
+  if (type !== 'all') data = data.filter(e => e.type === type);
+  if (q) data = data.filter(e => (e.title + ' ' + e.subject + ' ' + e.level).toLowerCase().includes(q));
+  renderExams(data);
+}
+
+function filterExamType(type, el) {
+  document.querySelectorAll('.filter-chip[onclick*="filterExamType"]').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  filterExams();
 }
 
 // ============ GLOBAL SEARCH ============

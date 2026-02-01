@@ -1,0 +1,17 @@
+<header class="topbar">
+  <div class="topbar-left">
+    <div>
+      <h2>{% block page_title %}Tableau de bord{% endblock %}</h2>
+      <div class="sub">{% block page_sub %}Bienvenue, voici un aperçu de votre plateforme{% endblock %}</div>
+    </div>
+  </div>
+
+  <div class="topbar-actions">
+    <div class="search-wrap">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Rechercher..." id="global-search">
+    </div>
+    <div class="icon-btn" title="Notifications"><i class="fas fa-bell"></i><span class="dot"></span></div>
+    <div class="icon-btn" title="Messages"><i class="fas fa-envelope"></i><span class="dot"></span></div>
+  </div>
+</header>

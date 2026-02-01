@@ -1,0 +1,40 @@
+{% extends "admin/base_admin.html" %}
+
+{% block page_title %}{{ page_title }}{% endblock %}
+{% block page_sub %}{{ page_sub }}{% endblock %}
+
+{% block content %}
+{% if stats %}
+<div class="stats-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:24px;">
+    <div class="stat-card" style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px;">
+        <div style="font-size:1.7rem;font-weight:800;">{{ stats.users|default:0 }}</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);">Utilisateurs actifs</div>
+    </div>
+    <div class="stat-card" style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px;">
+        <div style="font-size:1.7rem;font-weight:800;">{{ stats.content|default:0 }}</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);">Contenus publiés</div>
+    </div>
+</div>
+{% endif %}
+{% if role_breakdown %}
+<div class="card" style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:18px;">
+    <h3 style="font-size:0.9rem;font-weight:600;margin-bottom:14px;">Répartition des rôles</h3>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+        {% for item in role_breakdown %}
+        <div style="display:flex;align-items:center;gap:10px;">
+            <span class="badge badge-{% if item.role == 'admin' %}blue{% elif item.role == 'staff' %}amber{% elif item.role == 'enseignant' %}green{% else %}purple{% endif %}">{{ item.label }}</span>
+            <div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;">
+                {% with total=stats.users %}
+                <div style="width:{% if total %}{{ item.count|floatformat:0 }}{% else %}0{% endif %}%;min-width:{% if item.count %}2%{% else %}0{% endif %};height:100%;background:var(--blue);border-radius:3px;"></div>
+                {% endwith %}
+            </div>
+            <span style="font-size:0.72rem;color:var(--text-muted);width:28px;text-align:right;">{{ item.count }}</span>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+<div class="card" style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px;">
+    <p style="color:var(--text-muted);">Contenu de l'onglet « {{ page_title }} » à venir.</p>
+</div>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Utilisateurs — WilfriedÉducation Admin{% endblock %}
+
+{% block page_title %}Gestion des utilisateurs{% endblock %}
+{% block page_sub %}Créer, modifier et gérer les comptes{% endblock %}
+
+{% block content %}
+
+  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; flex-wrap:wrap; gap:10px;">
+    <div class="filter-bar" style="margin-bottom:0;">
+      <div class="search-wrap">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Rechercher un utilisateur..." id="user-search">
+      </div>
+      <a href="?tab=users&amp;role=all" class="filter-chip {% if current_role_filter == 'all' or not current_role_filter %}active{% endif %}">Tous</a>
+      <a href="?tab=users&amp;role=admin" class="filter-chip {% if current_role_filter == 'admin' %}active{% endif %}">Admin</a>
+      <a href="?tab=users&amp;role=staff" class="filter-chip {% if current_role_filter == 'staff' %}active{% endif %}">Staff</a>
+      <a href="?tab=users&amp;role=enseignant" class="filter-chip {% if current_role_filter == 'enseignant' %}active{% endif %}">Enseignant</a>
+      <a href="?tab=users&amp;role=etudiant" class="filter-chip {% if current_role_filter == 'etudiant' %}active{% endif %}">Étudiant</a>
+    </div>
+    <a href="{% url 'admin:user_create' %}" class="btn btn-primary">
+      <i class="fas fa-plus"></i> Nouvel utilisateur
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:40px;"><input type="checkbox"></th>
+            <th>Utilisateur</th>
+            <th>Email</th>
+            <th>Rôle</th>
+            <th>Inscrit le</th>
+            <th>Actif</th>
+            <th style="text-align:right;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+            <tr>
+              <td><input type="checkbox"></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:9px;">
+                  <div class="avatar-mini">{{ user.first_name|slice:":1" }}{{ user.last_name|slice:":1" }}</div>
+                  <div style="font-weight:500;">{{ user.get_full_name|default:user.email }}</div>
+                </div>
+              </td>
+              <td>{{ user.email }}</td>
+              <td><span class="badge badge-{{ user.role_color }}">{{ user.get_role_display|default:user.role }}</span></td>
+              <td>{{ user.date_joined|date:"Y-m-d" }}</td>
+              <td>{{ user.is_active|yesno:"Oui,Non" }}</td>
+              <td style="text-align:right;">
+                <a href="{% url 'admin:user_update' user.pk %}" class="btn btn-ghost btn-sm"><i class="fas fa-pen"></i></a>
+                <a href="#" class="btn btn-ghost btn-sm"><i class="fas fa-key"></i></a>
+                <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-muted);">Aucun utilisateur trouvé</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+{% endblock %}

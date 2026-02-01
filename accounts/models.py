@@ -18,7 +18,7 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_active", True)
-
+        extra_fields.setdefault("role", "admin")
         return self.create_user(email, password, **extra_fields)
 
 
@@ -26,6 +26,17 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     """
     Custom User model
     """
+
+    ROLE_ADMIN = "admin"
+    ROLE_STAFF = "staff"
+    ROLE_ENSEIGNANT = "enseignant"
+    ROLE_ETUDIANT = "etudiant"
+    ROLE_CHOICES = [
+        (ROLE_ADMIN, "Admin"),
+        (ROLE_STAFF, "Staff"),
+        (ROLE_ENSEIGNANT, "Enseignant"),
+        (ROLE_ETUDIANT, "Étudiant"),
+    ]
 
     email = models.EmailField(
         unique=True,
@@ -48,6 +59,13 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
         verbose_name="Phone number"
     )
 
+    role = models.CharField(
+        max_length=20,
+        choices=ROLE_CHOICES,
+        default=ROLE_ETUDIANT,
+        verbose_name="Rôle"
+    )
+
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
@@ -65,4 +83,17 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
 
     @property
     def full_name(self):
-        return f"{self.first_name} {self.last_name}"
+        return f"{self.first_name} {self.last_name}".strip() or self.email
+
+    def get_full_name(self):
+        return self.full_name
+
+    @property
+    def role_color(self):
+        colors = {
+            self.ROLE_ADMIN: "blue",
+            self.ROLE_STAFF: "amber",
+            self.ROLE_ENSEIGNANT: "green",
+            self.ROLE_ETUDIANT: "purple",
+        }
+        return colors.get(self.role, "blue")

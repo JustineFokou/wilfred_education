@@ -36,7 +36,7 @@
     <div class="max-w-md w-full">
         <!-- Logo & Title -->
         <div class="text-center mb-8">
-            <a href="index.html" class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-accent-500 to-accent-600 rounded-2xl shadow-xl mb-4">
+            <a href="{% url 'home' %}" class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-accent-500 to-accent-600 rounded-2xl shadow-xl mb-4">
                 <i class="fas fa-user-plus text-3xl text-white"></i>
             </a>
             <h2 class="text-3xl font-bold text-gray-900 font-poppins">Créer un Compte</h2>
@@ -200,14 +200,14 @@
             <!-- Login Link -->
             <p class="mt-6 text-center text-gray-600">
                 Vous avez déjà un compte ? 
-                <a href="login.html" class="text-accent-600 hover:text-accent-700 font-bold">
+                <a href="{% url 'accounts:login' %}" class="text-accent-600 hover:text-accent-700 font-bold">
                     Connectez-vous
                 </a>
             </p>
             
             <!-- Back to Home -->
             <div class="mt-4 text-center">
-                <a href="index.html" class="text-sm text-gray-500 hover:text-gray-700">
+                <a href="{% url 'home' %}" class="text-sm text-gray-500 hover:text-gray-700">
                     <i class="fas fa-arrow-left mr-2"></i>Retour à l'accueil
                 </a>
             </div>

@@ -1,0 +1,35 @@
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="icon-wrap"><i class="fas fa-graduation-cap"></i></div>
+    <div class="brand">Wilfried<span>Éd.</span></div>
+  </div>
+
+  <div class="nav-links">
+    <div class="nav-section-label">Principal</div>
+    <a href="{% url 'admin:dashboard' %}" class="nav-item {% if tab == 'dashboard' %}active{% endif %}">
+      <i class="fas fa-grid-view"></i><span>Tableau de bord</span>
+    </a>
+
+    <div class="nav-section-label">Gestion</div>
+    <a href="{% url 'admin:dashboard' %}?tab=users" class="nav-item {% if tab == 'users' %}active{% endif %}">
+      <i class="fas fa-users"></i><span>Utilisateurs</span>
+      {% if user_count is not None %}<span class="badge">{{ user_count }}</span>{% endif %}
+    </a>
+
+    <div class="nav-section-label">Contrôle</div>
+    <a href="{% url 'admin:dashboard' %}?tab=errors" class="nav-item {% if tab == 'errors' %}active{% endif %}">
+      <i class="fas fa-triangle-exclamation"></i><span>Erreurs</span>
+    </a>
+    <a href="{% url 'admin:dashboard' %}?tab=settings" class="nav-item {% if tab == 'settings' %}active{% endif %}">
+      <i class="fas fa-gear"></i><span>Paramètres</span>
+    </a>
+  </div>
+
+  <div class="sidebar-bottom">
+    <div class="avatar">{% if request.user.first_name or request.user.last_name %}{{ request.user.first_name|slice:":1" }}{{ request.user.last_name|slice:":1" }}{% else %}{{ request.user.email|slice:":2"|upper }}{% endif %}</div>
+    <div class="info">
+      <div class="name">{{ request.user.get_full_name|default:request.user.email }}</div>
+      <div class="role">{% if request.user.is_superuser %}Super Admin{% elif request.user.is_staff %}Staff{% else %}{{ request.user.get_role_display|default:"Utilisateur" }}{% endif %}</div>
+    </div>
+  </div>
+</aside>

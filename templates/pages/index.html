@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr" class="scroll-smooth">
 <head>
@@ -196,7 +197,7 @@
             <div class="flex justify-between items-center h-20">
                 <!-- Enhanced Logo -->
                 <div class="flex items-center space-x-3">
-                    <a href="index.html" class="flex items-center space-x-3 group">
+                    <a href="{% url 'home' %}" class="flex items-center space-x-3 group">
                         <div class="relative">
                             <div class="absolute inset-0 bg-gradient-to-br from-primary-600 to-primary-800 rounded-xl blur opacity-50 group-hover:opacity-75 transition-opacity"></div>
                             <div class="relative bg-gradient-to-br from-primary-600 to-primary-800 p-2.5 rounded-xl shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
@@ -214,7 +215,7 @@
                 
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-1">
-                    <a href="index.html" class="nav-link px-4 py-2 rounded-xl text-gray-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-blue-50 hover:text-primary-700 transition-all duration-300 font-medium group">
+                    <a href="{% url 'home' %}" class="nav-link px-4 py-2 rounded-xl text-gray-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-blue-50 hover:text-primary-700 transition-all duration-300 font-medium group">
                         <i class="fas fa-home mr-2 group-hover:scale-110 inline-block transition-transform"></i>Accueil
                     </a>
                     
@@ -226,7 +227,7 @@
                         </button>
                         <div class="absolute left-0 mt-2 w-64 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 -translate-y-2 border border-gray-100 overflow-hidden">
                             <div class="py-2">
-                                <a href="niveau_primaire.html" class="block px-6 py-4 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 hover:text-primary-700 transition-all duration-200 group/item">
+                                <a href="{% url 'home' %}#niveaux" class="block px-6 py-4 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 hover:text-primary-700 transition-all duration-200 group/item">
                                     <div class="flex items-center space-x-3">
                                         <div class="bg-gradient-to-br from-blue-500 to-blue-600 p-2 rounded-lg group-hover/item:scale-110 transition-transform">
                                             <i class="fas fa-child text-white"></i>
@@ -237,7 +238,7 @@
                                         </div>
                                     </div>
                                 </a>
-                                <a href="niveau_secondaire.html" class="block px-6 py-4 hover:bg-gradient-to-r hover:from-orange-50 hover:to-orange-100 hover:text-accent-700 transition-all duration-200 group/item">
+                                <a href="{% url 'home' %}#niveaux" class="block px-6 py-4 hover:bg-gradient-to-r hover:from-orange-50 hover:to-orange-100 hover:text-accent-700 transition-all duration-200 group/item">
                                     <div class="flex items-center space-x-3">
                                         <div class="bg-gradient-to-br from-orange-500 to-orange-600 p-2 rounded-lg group-hover/item:scale-110 transition-transform">
                                             <i class="fas fa-book text-white"></i>
@@ -248,7 +249,7 @@
                                         </div>
                                     </div>
                                 </a>
-                                <a href="niveau_superieur.html" class="block px-6 py-4 hover:bg-gradient-to-r hover:from-purple-50 hover:to-purple-100 hover:text-purple-700 transition-all duration-200 group/item">
+                                <a href="{% url 'home' %}#niveaux" class="block px-6 py-4 hover:bg-gradient-to-r hover:from-purple-50 hover:to-purple-100 hover:text-purple-700 transition-all duration-200 group/item">
                                     <div class="flex items-center space-x-3">
                                         <div class="bg-gradient-to-br from-purple-500 to-purple-600 p-2 rounded-lg group-hover/item:scale-110 transition-transform">
                                             <i class="fas fa-university text-white"></i>
@@ -263,7 +264,7 @@
                         </div>
                     </div>
                     
-                    <a href="cours.html" class="nav-link px-4 py-2 rounded-xl text-gray-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-blue-50 hover:text-primary-700 transition-all duration-300 font-medium group">
+                    <a href="{% url 'cours' %}" class="nav-link px-4 py-2 rounded-xl text-gray-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-blue-50 hover:text-primary-700 transition-all duration-300 font-medium group">
                         <i class="fas fa-video mr-2 group-hover:scale-110 inline-block transition-transform"></i>Cours
                     </a>
                     <a href="#about" class="nav-link px-4 py-2 rounded-xl text-gray-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-blue-50 hover:text-primary-700 transition-all duration-300 font-medium group">
@@ -273,15 +274,22 @@
                 
                 <!-- Enhanced Auth Buttons -->
                 <div class="hidden md:flex items-center space-x-3">
-                    <a href="login.html" class="px-6 py-2.5 border-2 border-primary-600 text-primary-600 rounded-xl hover:bg-gradient-to-r hover:from-primary-50 hover:to-blue-50 transition-all duration-300 font-semibold hover:scale-105 hover:shadow-lg">
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'accounts:logout' %}" class="px-6 py-2.5 border-2 border-primary-600 text-primary-600 rounded-xl hover:bg-primary-50 transition-all duration-300 font-semibold">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Déconnexion
+                    </a>
+                    {% if user.is_staff %}<a href="{% url 'admin:dashboard' %}" class="relative px-6 py-2.5 bg-gradient-to-r from-accent-500 to-accent-700 text-white rounded-xl font-semibold shadow-lg hover:scale-105"><i class="fas fa-cog mr-2"></i>Admin</a>{% endif %}
+                    {% else %}
+                    <a href="{% url 'accounts:login' %}" class="px-6 py-2.5 border-2 border-primary-600 text-primary-600 rounded-xl hover:bg-gradient-to-r hover:from-primary-50 hover:to-blue-50 transition-all duration-300 font-semibold hover:scale-105 hover:shadow-lg">
                         <i class="fas fa-sign-in-alt mr-2"></i>Connexion
                     </a>
-                    <a href="register.html" class="relative px-6 py-2.5 bg-gradient-to-r from-accent-500 via-accent-600 to-accent-700 text-white rounded-xl transition-all duration-300 font-semibold shadow-lg hover:shadow-2xl hover:scale-105 overflow-hidden group">
+                    <a href="{% url 'accounts:register' %}" class="relative px-6 py-2.5 bg-gradient-to-r from-accent-500 via-accent-600 to-accent-700 text-white rounded-xl transition-all duration-300 font-semibold shadow-lg hover:shadow-2xl hover:scale-105 overflow-hidden group">
                         <span class="relative z-10 flex items-center">
                             <i class="fas fa-user-plus mr-2"></i>Inscription
                         </span>
                         <div class="absolute inset-0 bg-gradient-to-r from-accent-600 via-accent-700 to-accent-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </a>
+                    {% endif %}
                 </div>
                 
                 <!-- Mobile Menu Button -->
@@ -294,24 +302,24 @@
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="md:hidden hidden bg-white/95 backdrop-blur-md border-t border-gray-200">
             <div class="px-4 py-4 space-y-2">
-                <a href="index.html" class="block px-4 py-3 rounded-xl text-gray-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-blue-50 hover:text-primary-700 transition-all duration-200">
+                <a href="{% url 'home' %}" class="block px-4 py-3 rounded-xl text-gray-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-blue-50 hover:text-primary-700 transition-all duration-200">
                     <i class="fas fa-home mr-2"></i>Accueil
                 </a>
                 
                 <div class="border-t border-gray-200 pt-2 mt-2">
                     <p class="px-4 text-xs font-bold text-gray-500 uppercase mb-2 font-display">Niveaux</p>
-                    <a href="niveau_primaire.html" class="block px-4 py-3 rounded-xl text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 hover:text-primary-700 transition-all duration-200">
+                    <a href="{% url 'home' %}#niveaux" class="block px-4 py-3 rounded-xl text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 hover:text-primary-700 transition-all duration-200">
                         <i class="fas fa-child text-blue-500 mr-2"></i>Primaire
                     </a>
-                    <a href="niveau_secondaire.html" class="block px-4 py-3 rounded-xl text-gray-700 hover:bg-gradient-to-r hover:from-orange-50 hover:to-orange-100 hover:text-accent-700 transition-all duration-200">
+                    <a href="{% url 'home' %}#niveaux" class="block px-4 py-3 rounded-xl text-gray-700 hover:bg-gradient-to-r hover:from-orange-50 hover:to-orange-100 hover:text-accent-700 transition-all duration-200">
                         <i class="fas fa-book text-accent-500 mr-2"></i>Secondaire
                     </a>
-                    <a href="niveau_superieur.html" class="block px-4 py-3 rounded-xl text-gray-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-purple-100 hover:text-purple-700 transition-all duration-200">
+                    <a href="{% url 'home' %}#niveaux" class="block px-4 py-3 rounded-xl text-gray-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-purple-100 hover:text-purple-700 transition-all duration-200">
                         <i class="fas fa-university text-purple-500 mr-2"></i>Supérieur
                     </a>
                 </div>
                 
-                <a href="cours.html" class="block px-4 py-3 rounded-xl text-gray-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-blue-50 hover:text-primary-700 transition-all duration-200">
+                <a href="{% url 'cours' %}" class="block px-4 py-3 rounded-xl text-gray-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-blue-50 hover:text-primary-700 transition-all duration-200">
                     <i class="fas fa-video mr-2"></i>Cours
                 </a>
                 <a href="#about" class="block px-4 py-3 rounded-xl text-gray-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-blue-50 hover:text-primary-700 transition-all duration-200">
@@ -319,12 +327,19 @@
                 </a>
                 
                 <div class="border-t border-gray-200 pt-4 mt-4 space-y-2">
-                    <a href="login.html" class="block px-4 py-3 border-2 border-primary-600 text-primary-600 rounded-xl text-center hover:bg-primary-50 transition-all duration-200">
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'accounts:logout' %}" class="block px-4 py-3 border-2 border-primary-600 text-primary-600 rounded-xl text-center hover:bg-primary-50 transition-all duration-200">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Déconnexion
+                    </a>
+                    {% if user.is_staff %}<a href="{% url 'admin:dashboard' %}" class="block px-4 py-3 bg-accent-500 text-white rounded-xl text-center">Admin</a>{% endif %}
+                    {% else %}
+                    <a href="{% url 'accounts:login' %}" class="block px-4 py-3 border-2 border-primary-600 text-primary-600 rounded-xl text-center hover:bg-primary-50 transition-all duration-200">
                         <i class="fas fa-sign-in-alt mr-2"></i>Connexion
                     </a>
-                    <a href="register.html" class="block px-4 py-3 bg-gradient-to-r from-accent-500 to-accent-600 text-white rounded-xl text-center hover:from-accent-600 hover:to-accent-700 transition-all duration-200">
+                    <a href="{% url 'accounts:register' %}" class="block px-4 py-3 bg-gradient-to-r from-accent-500 to-accent-600 text-white rounded-xl text-center hover:from-accent-600 hover:to-accent-700 transition-all duration-200">
                         <i class="fas fa-user-plus mr-2"></i>Inscription
                     </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -363,7 +378,7 @@
                     </p>
                     
                     <div class="flex flex-col sm:flex-row gap-4 pt-4 animate-slide-up stagger-2">
-                        <a href="register.html" class="group px-8 py-4 bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600 hover:from-gold-500 hover:via-gold-600 hover:to-gold-700 text-gray-900 rounded-xl font-bold text-lg shadow-2xl hover:shadow-gold-500/50 transition-all duration-300 transform hover:scale-105 hover:-rotate-1 flex items-center justify-center relative overflow-hidden">
+                        <a href="{% url 'accounts:register' %}" class="group px-8 py-4 bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600 hover:from-gold-500 hover:via-gold-600 hover:to-gold-700 text-gray-900 rounded-xl font-bold text-lg shadow-2xl hover:shadow-gold-500/50 transition-all duration-300 transform hover:scale-105 hover:-rotate-1 flex items-center justify-center relative overflow-hidden">
                             <span class="relative z-10 flex items-center">
                                 <span>Commencer Gratuitement</span>
                                 <i class="fas fa-arrow-right ml-3 group-hover:translate-x-2 transition-transform duration-300"></i>
@@ -376,15 +391,15 @@
                         </a>
                     </div>
                     
-                    <!-- Enhanced Stats with Animation -->
+                    <!-- Enhanced Stats with Animation (données dynamiques) -->
                     <div class="grid grid-cols-3 gap-6 pt-8 animate-slide-up stagger-3">
                         <div class="text-center group cursor-pointer" data-aos="zoom-in" data-aos-delay="100">
-                            <div class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gold-400 to-gold-600 bg-clip-text text-transparent font-display group-hover:scale-110 transition-transform duration-300">5000+</div>
-                            <div class="text-sm text-blue-200 mt-1">Étudiants Actifs</div>
+                            <div class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gold-400 to-gold-600 bg-clip-text text-transparent font-display group-hover:scale-110 transition-transform duration-300">{{ user_count|default:0 }}</div>
+                            <div class="text-sm text-blue-200 mt-1">Étudiants actifs</div>
                         </div>
                         <div class="text-center group cursor-pointer" data-aos="zoom-in" data-aos-delay="200">
-                            <div class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gold-400 to-gold-600 bg-clip-text text-transparent font-display group-hover:scale-110 transition-transform duration-300">500+</div>
-                            <div class="text-sm text-blue-200 mt-1">Cours Vidéos HD</div>
+                            <div class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gold-400 to-gold-600 bg-clip-text text-transparent font-display group-hover:scale-110 transition-transform duration-300">{{ content_count|default:0 }}</div>
+                            <div class="text-sm text-blue-200 mt-1">Cours vidéos</div>
                         </div>
                         <div class="text-center group cursor-pointer" data-aos="zoom-in" data-aos-delay="300">
                             <div class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gold-400 to-gold-600 bg-clip-text text-transparent font-display group-hover:scale-110 transition-transform duration-300">98%</div>
@@ -404,7 +419,7 @@
                         <!-- Main Photo Card with Glass Effect -->
                         <div class="relative glass rounded-3xl p-2 shadow-2xl border-2 border-white/30 hover:border-white/50 transition-all duration-500 hover:scale-105 hover:rotate-1">
                             <div class="overflow-hidden rounded-2xl shadow-xl photo-mask">
-                                <img src="staticimages/111.jpeg" alt="Wilfried - Fondateur de WilfriedÉducation" class="w-full h-auto object-cover transform hover:scale-110 transition-transform duration-700">
+                                <img src="{% static 'images/111.jpeg' %}" alt="Wilfried - Fondateur de WilfriedÉducation" class="w-full h-auto object-cover transform hover:scale-110 transition-transform duration-700">
                             </div>
                             
                             <!-- Enhanced Info Badge -->
@@ -520,7 +535,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Primaire -->
-                <a href="niveau_primaire.html" class="group relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4 border-2 border-blue-200 hover:border-blue-500" data-aos="zoom-in" data-aos-delay="100">
+                <a href="{% url 'home' %}#niveaux" class="group relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4 border-2 border-blue-200 hover:border-blue-500" data-aos="zoom-in" data-aos-delay="100">
                     <div class="h-2 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600"></div>
                     <div class="p-8 relative">
                         <div class="absolute top-0 right-0 w-40 h-40 bg-blue-500 rounded-full -mr-20 -mt-20 opacity-10 group-hover:scale-150 transition-transform duration-700"></div>
@@ -542,7 +557,7 @@
                 </a>
 
                 <!-- Secondaire -->
-                <a href="niveau_secondaire.html" class="group relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4 border-2 border-orange-200 hover:border-orange-500" data-aos="zoom-in" data-aos-delay="200">
+                <a href="{% url 'home' %}#niveaux" class="group relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4 border-2 border-orange-200 hover:border-orange-500" data-aos="zoom-in" data-aos-delay="200">
                     <div class="h-2 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600"></div>
                     <div class="p-8 relative">
                         <div class="absolute top-0 right-0 w-40 h-40 bg-orange-500 rounded-full -mr-20 -mt-20 opacity-10 group-hover:scale-150 transition-transform duration-700"></div>
@@ -564,7 +579,7 @@
                 </a>
 
                 <!-- Supérieur -->
-                <a href="niveau_superieur.html" class="group relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4 border-2 border-purple-200 hover:border-purple-500" data-aos="zoom-in" data-aos-delay="300">
+                <a href="{% url 'home' %}#niveaux" class="group relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4 border-2 border-purple-200 hover:border-purple-500" data-aos="zoom-in" data-aos-delay="300">
                     <div class="h-2 bg-gradient-to-r from-purple-400 via-purple-500 to-purple-600"></div>
                     <div class="p-8 relative">
                         <div class="absolute top-0 right-0 w-40 h-40 bg-purple-500 rounded-full -mr-20 -mt-20 opacity-10 group-hover:scale-150 transition-transform duration-700"></div>
@@ -687,14 +702,14 @@
             </p>
 
             <div class="flex flex-col sm:flex-row gap-5 justify-center items-center mb-10">
-                <a href="register.html" class="group inline-flex items-center px-12 py-5 bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600 hover:from-gold-500 hover:via-gold-600 hover:to-gold-700 text-gray-900 rounded-2xl font-bold text-xl shadow-2xl transition-all duration-300 transform hover:scale-110 hover:-rotate-1 relative overflow-hidden">
+                <a href="{% url 'accounts:register' %}" class="group inline-flex items-center px-12 py-5 bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600 hover:from-gold-500 hover:via-gold-600 hover:to-gold-700 text-gray-900 rounded-2xl font-bold text-xl shadow-2xl transition-all duration-300 transform hover:scale-110 hover:-rotate-1 relative overflow-hidden">
                     <span class="relative z-10 flex items-center">
                         <span>Inscription Gratuite</span>
                         <i class="fas fa-arrow-right ml-3 group-hover:translate-x-2 transition-transform duration-300"></i>
                     </span>
                     <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
                 </a>
-                <a href="cours.html" class="inline-flex items-center px-12 py-5 glass border-2 border-white/40 hover:border-white/70 text-white rounded-2xl font-bold text-xl transition-all duration-300 transform hover:scale-110 hover:rotate-1 hover-glow">
+                <a href="{% url 'cours' %}" class="inline-flex items-center px-12 py-5 glass border-2 border-white/40 hover:border-white/70 text-white rounded-2xl font-bold text-xl transition-all duration-300 transform hover:scale-110 hover:rotate-1 hover-glow">
                     <i class="fas fa-play-circle mr-3"></i>
                     <span>Voir les Cours</span>
                 </a>
@@ -751,8 +766,8 @@
                         <div class="w-1.5 h-7 bg-gradient-to-b from-gold-400 to-gold-600 rounded-full mr-3"></div>Liens rapides
                     </h4>
                     <ul class="space-y-3">
-                        <li><a href="index.html" class="text-gray-400 hover:text-gold-400 transition-all duration-200 flex items-center group font-serif"><i class="fas fa-chevron-right text-xs text-gold-500 mr-3 group-hover:translate-x-1 transition-transform"></i>Accueil</a></li>
-                        <li><a href="cours.html" class="text-gray-400 hover:text-gold-400 transition-all duration-200 flex items-center group font-serif"><i class="fas fa-chevron-right text-xs text-gold-500 mr-3 group-hover:translate-x-1 transition-transform"></i>Cours</a></li>
+                <li><a href="{% url 'home' %}" class="text-gray-400 hover:text-gold-400 transition-all duration-200 flex items-center group font-serif"><i class="fas fa-chevron-right text-xs text-gold-500 mr-3 group-hover:translate-x-1 transition-transform"></i>Accueil</a></li>
+                <li><a href="{% url 'home' %}#niveaux" class="text-gray-400 hover:text-gold-400 transition-all duration-200 flex items-center group font-serif"><i class="fas fa-chevron-right text-xs text-gold-500 mr-3 group-hover:translate-x-1 transition-transform"></i>Cours</a></li>
                         <li><a href="#about" class="text-gray-400 hover:text-gold-400 transition-all duration-200 flex items-center group font-serif"><i class="fas fa-chevron-right text-xs text-gold-500 mr-3 group-hover:translate-x-1 transition-transform"></i>À propos</a></li>
                         <li><a href="#niveaux" class="text-gray-400 hover:text-gold-400 transition-all duration-200 flex items-center group font-serif"><i class="fas fa-chevron-right text-xs text-gold-500 mr-3 group-hover:translate-x-1 transition-transform"></i>Niveaux</a></li>
                     </ul>
